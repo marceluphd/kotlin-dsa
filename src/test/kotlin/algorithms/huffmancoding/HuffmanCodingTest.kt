@@ -1,4 +1,4 @@
-package huffmancoding
+package algorithms.huffmancoding
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo

@@ -1,6 +1,15 @@
 package extensions
 
 import java.math.BigInteger
+import kotlin.math.sqrt
+
+/** Return whether the number is prime. */
+fun Int.isPrime(): Boolean {
+    if (this <= 1) return false
+
+    val sqrt = sqrt(toDouble()).toInt()
+    return (2..sqrt).all { this % it != 0 }
+}
 
 /**
  * Calculates the factorial, `n!`.
@@ -83,6 +92,7 @@ fun <T> List<T>.permutations(): List<List<T>> =
     }
 
 // TODO: permutations of size k
+fun <T> List<T>.permutations(k: Int): List<List<T>> = TODO()
 
 /**
  * https://brilliant.org/wiki/sum-of-n-n2-or-n3/

@@ -1,4 +1,4 @@
-package huffmancoding
+package algorithms.huffmancoding
 
 import extensions.characterFrequencies
 import java.util.*
@@ -55,20 +55,17 @@ fun String.decode(encoding: HuffmanEncoding): String {
     }
 }
 
-/**
- * Create the Huffman Tree
- */
+/** Create the Huffman Tree */
 fun createEncoding(frequencyByChar: Map<Char, Int>): HuffmanEncoding {
-    val minHeap: PriorityQueue<HuffmanTreeNode> = initializeMinHeap(frequencyByChar)
+    val minHeap: PriorityQueue<HuffmanTreeNode> =
+        initializeMinHeap(frequencyByChar)
     val huffmanTree = buildHuffmanTree(minHeap)
 
     val codes = generateCodes(huffmanTree)
     return HuffmanEncoding(huffmanTree, codes)
 }
 
-/**
- * Create Min-Heap of HuffmanTreeNodes (with all leaf nodes)
- */
+/** Create Min-Heap of HuffmanTreeNodes (with all leaf nodes) */
 private fun initializeMinHeap(frequencies: Map<Char, Int>): PriorityQueue<HuffmanTreeNode> {
     val leafNodes = createLeafNodesFromFrequencies(frequencies)
     return PriorityQueue(leafNodes)
@@ -81,7 +78,8 @@ private fun createLeafNodesFromFrequencies(frequencies: Map<Char, Int>): List<Hu
 
 private fun buildHuffmanTree(minHeap: PriorityQueue<HuffmanTreeNode>): HuffmanTreeNode {
     while (minHeap.size > 1) {
-        val subtreeRoot = createSubtree(removeTwoLeastFrequent(minHeap))
+        val subtreeRoot =
+            createSubtree(removeTwoLeastFrequent(minHeap))
         minHeap.add(subtreeRoot)
     }
     return minHeap.peek()
@@ -98,9 +96,7 @@ private fun createSubtree(twoLeastFrequent: Pair<HuffmanTreeNode, HuffmanTreeNod
 private fun removeTwoLeastFrequent(minHeap: PriorityQueue<HuffmanTreeNode>): Pair<HuffmanTreeNode, HuffmanTreeNode> =
     (minHeap.poll() to minHeap.poll())
 
-/**
- * Traverse tree to build a map of each symbol's code.
- */
+/** Traverse tree to build a map of each symbol's code. */
 private fun generateCodes(huffmanTree: HuffmanTreeNode): Map<Char, String> =
     generateCodes(huffmanTree, "", mutableMapOf())
 

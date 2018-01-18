@@ -27,8 +27,8 @@ dependencies {
     compile "com.google.guava:guava:23.6-jre"
     testCompile "junit:junit:4.12"
     testCompile "com.natpryce:hamkrest:1.4.2.2"
-    // testCompile "org.jetbrains.kotlin:kotlin-test"
-    // testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+    testCompile "org.jetbrains.kotlin:kotlin-test"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit"
 }
 
 compileKotlin {
