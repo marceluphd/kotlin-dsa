@@ -24,3 +24,11 @@ fun <E> MutableList<E>.append(element: E): Boolean = add(element)
  */
 fun <E> MutableList<E>.appendAll(elements: Collection<E>): Boolean = addAll(elements)
 
+/**
+ * **Mutating** - Swap the elements at indices [i] and [j].
+ */
+fun <T> MutableList<T>.swap(i: Int, j: Int) {
+    val temp = this[i]
+    this[i] = this[j]
+    this[j] = temp
+}

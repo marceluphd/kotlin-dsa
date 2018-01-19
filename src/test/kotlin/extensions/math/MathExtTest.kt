@@ -8,137 +8,219 @@ import kotlin.system.measureTimeMillis
 
 class MathExtTest {
 
-    @Ignore
     @Test
     fun powerSet() {
+        val times = arrayListOf<Long>()
+        val runs = 10
+        (1..runs).forEach {
+            val ms = measureTimeMillis {
+                //        assertEquals(setOf(emptyList<Int>()), emptySet<Int>().powerSet())
+                assertEquals(setOf(setOf(), setOf(1)), setOf(1).powerSet())
+                assertEquals(setOf(setOf(), setOf(1), setOf(2), setOf(1, 2)), setOf(1, 2).powerSet())
+                assertEquals(
+                    setOf(setOf(), setOf(1), setOf(2), setOf(3), setOf(1, 2), setOf(1, 3), setOf(2, 3), setOf(1, 2, 3)),
+                    setOf(1, 2, 3).powerSet())
+                assertEquals(
+                    setOf(setOf(), setOf(1), setOf(2), setOf(3), setOf(4),
+                        setOf(1, 2), setOf(1, 3), setOf(1, 4), setOf(2, 3), setOf(2, 4), setOf(3, 4),
+                        setOf(1, 2, 3), setOf(1, 2, 4), setOf(1, 3, 4), setOf(2, 3, 4),
+                        setOf(1, 2, 3, 4)),
+                    listOf(1, 2, 3, 4).powerSet())
+            }
+            times += ms
+        }
+        val adjustedTimes = times.drop(3)   // 1st one or two affected by test startup
+        println("adjustedTimes for powerSet: $adjustedTimes")
+        println("average run: ${adjustedTimes.average().roundedToNDecimalPlaces(2)}")
+    }
+
+//    @Test
+//    fun powerSetList() {
+//        assertEquals(listOf(emptyList<Int>()), emptyList<Int>().powerSet())
+//        assertEquals(listOf(listOf(), listOf(1)), listOf(1).powerSet())
+//        assertEquals(listOf(listOf(), listOf(1), listOf(2), listOf(1, 2)), listOf(1, 2).powerSet())
+//        assertEquals(
+//            listOf(listOf(), listOf(1), listOf(2), listOf(3), listOf(1, 2), listOf(1, 3), listOf(2, 3), listOf(1, 2, 3)),
+//            listOf(1, 2, 3).powerSet())
+//        assertEquals(
+//            listOf(listOf(), listOf(1), listOf(2), listOf(3), listOf(4),
+//                listOf(1, 2), listOf(1, 3), listOf(1, 4), listOf(2, 3), listOf(2, 4), listOf(3, 4),
+//                listOf(1, 2, 3), listOf(1, 2, 4), listOf(1, 3, 4), listOf(2, 3, 4),
+//                listOf(1, 2, 3, 4)),
+//            listOf(1, 2, 3, 4).powerSet())
+//    }
+
+    @Test
+    fun combinationsList() {
+        val times = arrayListOf<Long>()
+        val runs = 15
+        (1..runs).forEach {
+            val ms = measureTimeMillis {
+                assertEquals(
+                    setOf(emptySet<Int>()),
+                    listOf(1, 2, 3).combinations(0)
+                )
+
+                assertEquals(
+                    setOf(setOf(1), setOf(2), setOf(3)),
+                    listOf(1, 2, 3).combinations(1)
+                )
+
+                assertEquals(
+                    setOf(setOf(1, 2), setOf(1, 3), setOf(2, 3)),
+                    listOf(1, 2, 3).combinations(2)
+                )
+
+                assertEquals(
+                    setOf(setOf(1, 2, 3)),
+                    listOf(1, 2, 3).combinations()
+                )
+
+                assertEquals(
+                    setOf(
+                        setOf(0, 1, 2, 3),
+                        setOf(0, 1, 2, 4),
+                        setOf(0, 1, 2, 5),
+                        setOf(0, 1, 3, 4),
+                        setOf(0, 1, 3, 5),
+                        setOf(0, 1, 4, 5),
+                        setOf(0, 2, 3, 4),
+                        setOf(0, 2, 3, 5),
+                        setOf(0, 2, 4, 5),
+                        setOf(0, 3, 4, 5),
+                        setOf(1, 2, 3, 4),
+                        setOf(1, 2, 3, 5),
+                        setOf(1, 2, 4, 5),
+                        setOf(1, 3, 4, 5),
+                        setOf(2, 3, 4, 5)
+                    ),
+                    listOf(0, 1, 2, 3, 4, 5).combinations(k = 4)
+                )
+
+            }
+            times += ms
+        }
+        val adjustedTimes = times.drop(2)   // 1st one or two affected by test startup
+        println("adjustedTimes for combinationsList: $adjustedTimes")
+        println("average run: ${adjustedTimes.average().roundedToNDecimalPlaces(2)}")
     }
 
     @Test
-    fun combinations() {
-        val ms = measureTimeMillis {
-            assertEquals(
-                listOf(emptyList<Int>()),
-                listOf(1, 2, 3).combinations(0)
-            )
+    fun combinationsSet() {
+        val times = arrayListOf<Long>()
+        val runs = 15
+        (1..runs).forEach {
+            val ms = measureTimeMillis {
+                assertEquals(
+                    setOf(emptySet<Int>()),
+                    setOf(1, 2, 3).combinations(0)
+                )
 
-            assertEquals(
-                listOf(listOf(1), listOf(2), listOf(3)),
-                listOf(1, 2, 3).combinations(1)
-            )
+                assertEquals(
+                    setOf(setOf(1), setOf(2), setOf(3)),
+                    setOf(1, 2, 3).combinations(1)
+                )
 
-            assertEquals(
-                listOf(listOf(1, 2), listOf(1, 3), listOf(2, 3)),
-                listOf(1, 2, 3).combinations(2)
-            )
+                assertEquals(
+                    setOf(setOf(1, 2), setOf(1, 3), setOf(2, 3)),
+                    setOf(1, 2, 3).combinations(2)
+                )
 
-            assertEquals(
-                listOf(listOf(1, 2, 3)),
-                listOf(1, 2, 3).combinations()
-            )
+                assertEquals(
+                    setOf(setOf(1, 2, 3)),
+                    setOf(1, 2, 3).combinations()
+                )
 
-            assertEquals(
-                listOf(
-                    listOf(0, 1, 2, 3),
-                    listOf(0, 1, 2, 4),
-                    listOf(0, 1, 2, 5),
-                    listOf(0, 1, 3, 4),
-                    listOf(0, 1, 3, 5),
-                    listOf(0, 1, 4, 5),
-                    listOf(0, 2, 3, 4),
-                    listOf(0, 2, 3, 5),
-                    listOf(0, 2, 4, 5),
-                    listOf(0, 3, 4, 5),
-                    listOf(1, 2, 3, 4),
-                    listOf(1, 2, 3, 5),
-                    listOf(1, 2, 4, 5),
-                    listOf(1, 3, 4, 5),
-                    listOf(2, 3, 4, 5)
-                ),
-                listOf(0, 1, 2, 3, 4, 5).combinations(k = 4)
-            )
+                assertEquals(
+                    setOf(
+                        setOf(0, 1, 2, 3),
+                        setOf(0, 1, 2, 4),
+                        setOf(0, 1, 2, 5),
+                        setOf(0, 1, 3, 4),
+                        setOf(0, 1, 3, 5),
+                        setOf(0, 1, 4, 5),
+                        setOf(0, 2, 3, 4),
+                        setOf(0, 2, 3, 5),
+                        setOf(0, 2, 4, 5),
+                        setOf(0, 3, 4, 5),
+                        setOf(1, 2, 3, 4),
+                        setOf(1, 2, 3, 5),
+                        setOf(1, 2, 4, 5),
+                        setOf(1, 3, 4, 5),
+                        setOf(2, 3, 4, 5)
+                    ),
+                    setOf(0, 1, 2, 3, 4, 5).combinations(k = 4)
+                )
 
+            }
+            times += ms
         }
-        println("$ms ms")
+        val adjustedTimes = times.drop(2)
+        println("adjustedTimes for combinationsSet: $adjustedTimes")
+        println("average run: ${adjustedTimes.average().roundedToNDecimalPlaces(2)}")
     }
 
     @Test
     fun permutations() {
-        val ms = measureTimeMillis {
-            assertEquals(
-                listOf(
-                    listOf(1, 2, 3),
-                    listOf(1, 3, 2),
-                    listOf(2, 1, 3),
-                    listOf(2, 3, 1),
-                    listOf(3, 1, 2),
-                    listOf(3, 2, 1)
-                ),
-                listOf(1, 2, 3).permutations()
-            )
+        val times = arrayListOf<Long>()
+        val runs = 8
+        (1..runs).forEach {
+            val ms = measureTimeMillis {
+                assertEquals(
+                    setOf(
+                        listOf(1, 2, 3),
+                        listOf(1, 3, 2),
+                        listOf(2, 1, 3),
+                        listOf(2, 3, 1),
+                        listOf(3, 1, 2),
+                        listOf(3, 2, 1)
+                    ),
+                    listOf(1, 2, 3).permutations()
+                )
 
-            assertEquals(
-                listOf(
-                    listOf(0, 1, 2, 3, 4), listOf(0, 1, 2, 4, 3), listOf(0, 1, 3, 2, 4), listOf(0, 1, 3, 4, 2),
-                    listOf(0, 1, 4, 2, 3), listOf(0, 1, 4, 3, 2), listOf(0, 2, 1, 3, 4), listOf(0, 2, 1, 4, 3),
-                    listOf(0, 2, 3, 1, 4), listOf(0, 2, 3, 4, 1), listOf(0, 2, 4, 1, 3), listOf(0, 2, 4, 3, 1),
-                    listOf(0, 3, 1, 2, 4), listOf(0, 3, 1, 4, 2), listOf(0, 3, 2, 1, 4), listOf(0, 3, 2, 4, 1),
-                    listOf(0, 3, 4, 1, 2), listOf(0, 3, 4, 2, 1), listOf(0, 4, 1, 2, 3), listOf(0, 4, 1, 3, 2),
-                    listOf(0, 4, 2, 1, 3), listOf(0, 4, 2, 3, 1), listOf(0, 4, 3, 1, 2), listOf(0, 4, 3, 2, 1),
-                    listOf(1, 0, 2, 3, 4), listOf(1, 0, 2, 4, 3), listOf(1, 0, 3, 2, 4), listOf(1, 0, 3, 4, 2),
-                    listOf(1, 0, 4, 2, 3), listOf(1, 0, 4, 3, 2), listOf(1, 2, 0, 3, 4), listOf(1, 2, 0, 4, 3),
-                    listOf(1, 2, 3, 0, 4), listOf(1, 2, 3, 4, 0), listOf(1, 2, 4, 0, 3), listOf(1, 2, 4, 3, 0),
-                    listOf(1, 3, 0, 2, 4), listOf(1, 3, 0, 4, 2), listOf(1, 3, 2, 0, 4), listOf(1, 3, 2, 4, 0),
-                    listOf(1, 3, 4, 0, 2), listOf(1, 3, 4, 2, 0), listOf(1, 4, 0, 2, 3), listOf(1, 4, 0, 3, 2),
-                    listOf(1, 4, 2, 0, 3), listOf(1, 4, 2, 3, 0), listOf(1, 4, 3, 0, 2), listOf(1, 4, 3, 2, 0),
-                    listOf(2, 0, 1, 3, 4), listOf(2, 0, 1, 4, 3), listOf(2, 0, 3, 1, 4), listOf(2, 0, 3, 4, 1),
-                    listOf(2, 0, 4, 1, 3), listOf(2, 0, 4, 3, 1), listOf(2, 1, 0, 3, 4), listOf(2, 1, 0, 4, 3),
-                    listOf(2, 1, 3, 0, 4), listOf(2, 1, 3, 4, 0), listOf(2, 1, 4, 0, 3), listOf(2, 1, 4, 3, 0),
-                    listOf(2, 3, 0, 1, 4), listOf(2, 3, 0, 4, 1), listOf(2, 3, 1, 0, 4), listOf(2, 3, 1, 4, 0),
-                    listOf(2, 3, 4, 0, 1), listOf(2, 3, 4, 1, 0), listOf(2, 4, 0, 1, 3), listOf(2, 4, 0, 3, 1),
-                    listOf(2, 4, 1, 0, 3), listOf(2, 4, 1, 3, 0), listOf(2, 4, 3, 0, 1), listOf(2, 4, 3, 1, 0),
-                    listOf(3, 0, 1, 2, 4), listOf(3, 0, 1, 4, 2), listOf(3, 0, 2, 1, 4), listOf(3, 0, 2, 4, 1),
-                    listOf(3, 0, 4, 1, 2), listOf(3, 0, 4, 2, 1), listOf(3, 1, 0, 2, 4), listOf(3, 1, 0, 4, 2),
-                    listOf(3, 1, 2, 0, 4), listOf(3, 1, 2, 4, 0), listOf(3, 1, 4, 0, 2), listOf(3, 1, 4, 2, 0),
-                    listOf(3, 2, 0, 1, 4), listOf(3, 2, 0, 4, 1), listOf(3, 2, 1, 0, 4), listOf(3, 2, 1, 4, 0),
-                    listOf(3, 2, 4, 0, 1), listOf(3, 2, 4, 1, 0), listOf(3, 4, 0, 1, 2), listOf(3, 4, 0, 2, 1),
-                    listOf(3, 4, 1, 0, 2), listOf(3, 4, 1, 2, 0), listOf(3, 4, 2, 0, 1), listOf(3, 4, 2, 1, 0),
-                    listOf(4, 0, 1, 2, 3), listOf(4, 0, 1, 3, 2), listOf(4, 0, 2, 1, 3), listOf(4, 0, 2, 3, 1),
-                    listOf(4, 0, 3, 1, 2), listOf(4, 0, 3, 2, 1), listOf(4, 1, 0, 2, 3), listOf(4, 1, 0, 3, 2),
-                    listOf(4, 1, 2, 0, 3), listOf(4, 1, 2, 3, 0), listOf(4, 1, 3, 0, 2), listOf(4, 1, 3, 2, 0),
-                    listOf(4, 2, 0, 1, 3), listOf(4, 2, 0, 3, 1), listOf(4, 2, 1, 0, 3), listOf(4, 2, 1, 3, 0),
-                    listOf(4, 2, 3, 0, 1), listOf(4, 2, 3, 1, 0), listOf(4, 3, 0, 1, 2), listOf(4, 3, 0, 2, 1),
-                    listOf(4, 3, 1, 0, 2), listOf(4, 3, 1, 2, 0), listOf(4, 3, 2, 0, 1), listOf(4, 3, 2, 1, 0)
-                ),
-                listOf(0, 1, 2, 3, 4).permutations()
-            )
+                assertEquals(
+                    setOf(
+                        listOf(0, 1, 2, 3, 4), listOf(0, 1, 2, 4, 3), listOf(0, 1, 3, 2, 4), listOf(0, 1, 3, 4, 2),
+                        listOf(0, 1, 4, 2, 3), listOf(0, 1, 4, 3, 2), listOf(0, 2, 1, 3, 4), listOf(0, 2, 1, 4, 3),
+                        listOf(0, 2, 3, 1, 4), listOf(0, 2, 3, 4, 1), listOf(0, 2, 4, 1, 3), listOf(0, 2, 4, 3, 1),
+                        listOf(0, 3, 1, 2, 4), listOf(0, 3, 1, 4, 2), listOf(0, 3, 2, 1, 4), listOf(0, 3, 2, 4, 1),
+                        listOf(0, 3, 4, 1, 2), listOf(0, 3, 4, 2, 1), listOf(0, 4, 1, 2, 3), listOf(0, 4, 1, 3, 2),
+                        listOf(0, 4, 2, 1, 3), listOf(0, 4, 2, 3, 1), listOf(0, 4, 3, 1, 2), listOf(0, 4, 3, 2, 1),
+                        listOf(1, 0, 2, 3, 4), listOf(1, 0, 2, 4, 3), listOf(1, 0, 3, 2, 4), listOf(1, 0, 3, 4, 2),
+                        listOf(1, 0, 4, 2, 3), listOf(1, 0, 4, 3, 2), listOf(1, 2, 0, 3, 4), listOf(1, 2, 0, 4, 3),
+                        listOf(1, 2, 3, 0, 4), listOf(1, 2, 3, 4, 0), listOf(1, 2, 4, 0, 3), listOf(1, 2, 4, 3, 0),
+                        listOf(1, 3, 0, 2, 4), listOf(1, 3, 0, 4, 2), listOf(1, 3, 2, 0, 4), listOf(1, 3, 2, 4, 0),
+                        listOf(1, 3, 4, 0, 2), listOf(1, 3, 4, 2, 0), listOf(1, 4, 0, 2, 3), listOf(1, 4, 0, 3, 2),
+                        listOf(1, 4, 2, 0, 3), listOf(1, 4, 2, 3, 0), listOf(1, 4, 3, 0, 2), listOf(1, 4, 3, 2, 0),
+                        listOf(2, 0, 1, 3, 4), listOf(2, 0, 1, 4, 3), listOf(2, 0, 3, 1, 4), listOf(2, 0, 3, 4, 1),
+                        listOf(2, 0, 4, 1, 3), listOf(2, 0, 4, 3, 1), listOf(2, 1, 0, 3, 4), listOf(2, 1, 0, 4, 3),
+                        listOf(2, 1, 3, 0, 4), listOf(2, 1, 3, 4, 0), listOf(2, 1, 4, 0, 3), listOf(2, 1, 4, 3, 0),
+                        listOf(2, 3, 0, 1, 4), listOf(2, 3, 0, 4, 1), listOf(2, 3, 1, 0, 4), listOf(2, 3, 1, 4, 0),
+                        listOf(2, 3, 4, 0, 1), listOf(2, 3, 4, 1, 0), listOf(2, 4, 0, 1, 3), listOf(2, 4, 0, 3, 1),
+                        listOf(2, 4, 1, 0, 3), listOf(2, 4, 1, 3, 0), listOf(2, 4, 3, 0, 1), listOf(2, 4, 3, 1, 0),
+                        listOf(3, 0, 1, 2, 4), listOf(3, 0, 1, 4, 2), listOf(3, 0, 2, 1, 4), listOf(3, 0, 2, 4, 1),
+                        listOf(3, 0, 4, 1, 2), listOf(3, 0, 4, 2, 1), listOf(3, 1, 0, 2, 4), listOf(3, 1, 0, 4, 2),
+                        listOf(3, 1, 2, 0, 4), listOf(3, 1, 2, 4, 0), listOf(3, 1, 4, 0, 2), listOf(3, 1, 4, 2, 0),
+                        listOf(3, 2, 0, 1, 4), listOf(3, 2, 0, 4, 1), listOf(3, 2, 1, 0, 4), listOf(3, 2, 1, 4, 0),
+                        listOf(3, 2, 4, 0, 1), listOf(3, 2, 4, 1, 0), listOf(3, 4, 0, 1, 2), listOf(3, 4, 0, 2, 1),
+                        listOf(3, 4, 1, 0, 2), listOf(3, 4, 1, 2, 0), listOf(3, 4, 2, 0, 1), listOf(3, 4, 2, 1, 0),
+                        listOf(4, 0, 1, 2, 3), listOf(4, 0, 1, 3, 2), listOf(4, 0, 2, 1, 3), listOf(4, 0, 2, 3, 1),
+                        listOf(4, 0, 3, 1, 2), listOf(4, 0, 3, 2, 1), listOf(4, 1, 0, 2, 3), listOf(4, 1, 0, 3, 2),
+                        listOf(4, 1, 2, 0, 3), listOf(4, 1, 2, 3, 0), listOf(4, 1, 3, 0, 2), listOf(4, 1, 3, 2, 0),
+                        listOf(4, 2, 0, 1, 3), listOf(4, 2, 0, 3, 1), listOf(4, 2, 1, 0, 3), listOf(4, 2, 1, 3, 0),
+                        listOf(4, 2, 3, 0, 1), listOf(4, 2, 3, 1, 0), listOf(4, 3, 0, 1, 2), listOf(4, 3, 0, 2, 1),
+                        listOf(4, 3, 1, 0, 2), listOf(4, 3, 1, 2, 0), listOf(4, 3, 2, 0, 1), listOf(4, 3, 2, 1, 0)
+                    ),
+                    listOf(0, 1, 2, 3, 4).permutations()
+                )
 
-            listOf(0, 1, 2, 3, 4, 5, 6, 7).permutations()
+                listOf(0, 1, 2, 3, 4, 5, 6, 7).permutations()
+            }
+            times += ms
         }
-        println("$ms ms")
-    }
-
-    @Ignore
-    @Test
-    fun `permutations of size k`() {
-        assertEquals(
-            listOf(listOf<Int>()),
-            listOf(1, 2).permutations(k = 0)
-        )
-
-        assertEquals(
-            listOf(listOf(1), listOf(2)),
-            listOf(1, 2).permutations(k = 1)
-        )
-
-        assertEquals(
-            listOf(listOf(1, 2), listOf(1, 3), listOf(2, 1), listOf(2, 3), listOf(3, 1), listOf(3, 2)),
-            listOf(1, 2, 3).permutations(k = 2)
-        )
-
-        assertEquals(
-            listOf(listOf(1, 2), listOf(2, 1)),
-            listOf(1, 2).permutations()
-        )
+        val adjustedTimes = times.drop(3)   // 1st one or two affected by test startup
+        println("adjustedTimes for permutations: $adjustedTimes")
+        println("average run: ${adjustedTimes.average().roundedToNDecimalPlaces(2)}")
     }
 
     @Test

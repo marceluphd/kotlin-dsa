@@ -1,6 +1,6 @@
 package algorithms.math.primes
 
-import extensions.isPrime
+import extensions.math.isPrime
 import kotlin.coroutines.experimental.buildSequence
 
 /**

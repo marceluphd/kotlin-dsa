@@ -1,6 +1,6 @@
 package algorithms.huffmancoding
 
-import extensions.characterFrequencies
+import extensions.strings.characterFrequencies
 import java.util.*
 
 /**

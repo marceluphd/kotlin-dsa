@@ -13,10 +13,9 @@ fun <T> List<T>.frequencyMap(): Map<T, Int> = groupingBy { it }.eachCount()
  * Return a map where the entries are (element -> List of indices containing element)
  */
 fun <T> List<T>.valueToIndicesMap(): Map<T, List<Int>> = withIndex()
-    .groupBy(keySelector = { (i, n) -> n }, valueTransform = { (i, n) -> i })
+    .groupBy(keySelector = { it.value }, valueTransform = { it.index })
 
-
-// Tuples
+/* Tuples */
 fun <T> List<T>.toPair(): Pair<T, T> {
     require(size == 2) { "List must have size 2 to convert to Pair" }
     return Pair(this[0], this[1])

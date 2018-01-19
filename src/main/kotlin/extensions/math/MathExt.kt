@@ -1,10 +1,23 @@
 package extensions.math
 
 import java.math.BigInteger
+import kotlin.math.sqrt
 
 /**
- * Mathematical functions & utilities not in java.lang.Math
+ * Mathematical functions
+ * See also https://github.com/MarcinMoskala/KotlinDiscreteMathToolkit
  */
+
+fun Int.isPrime(): Boolean {
+    if (this <= 1)
+        return false
+
+    val sqrt = sqrt(toDouble()).toInt()
+    return (2..sqrt).all { this % it != 0 }
+}
+
+/** https://brilliant.org/wiki/sum-of-n-n2-or-n3 */
+fun sumOfFirstNPositiveIntegers(n: Int) = ((n * (n + 1)) / 2)
 
 /**
  * Calculates the factorial, `n!`.
@@ -44,109 +57,42 @@ fun choose(n: Int, k: Int): BigInteger {
     return numerator.divide(denominator)
 }
 
+/**
+ * Generates all combinations of size [k].
+ */
+fun <T> Collection<T>.combinations(k: Int = size): Set<Set<T>> =
+    combinations(this, setOf(setOf()), k).filter { it.size == k }.toSet()
 
-// TODO - list to set
-fun <T> powerSet(elements: List<T>): List<List<T>> {
-    return if (elements.isEmpty()) {
-        emptyList()
-    } else {
-        elements.foldIndexed(listOf(emptyList())) { index, acc, _ ->
-            acc + powerSet(elements.drop(index + 1))
-                .map { listOf(elements[index]) + it }
-        }
+private tailrec fun <T> combinations(left: Collection<T>, acc: Set<Set<T>>, k: Int): Set<Set<T>> =
+    if (left.isEmpty()) acc
+    else combinations(left.drop(1), acc + acc.map { it + left.first() }, k)
+
+/** http://tinyurl.com/yd526qh2 */
+fun <T> Collection<T>.powerSet(): Set<Set<T>> =
+    powerSet(this, setOf(setOf()))
+
+private tailrec fun <T> powerSet(left: Collection<T>, acc: Set<Set<T>>): Set<Set<T>> =
+    if (left.isEmpty()) acc
+    else powerSet(left.drop(1), acc + acc.map { it + left.first() })
+
+
+fun <T> List<T>.permutations(): Set<List<T>> = when {
+    isEmpty() -> setOf()
+    size == 1 -> setOf(listOf(this[0]))
+    else -> {
+        drop(1).permutations()
+            .flatMap { sublist ->
+                (0..sublist.size).map { i -> sublist.plusAtIndex(index = i, element = first()) }
+            }.toSet()
     }
 }
 
-/**
- * combinations("abcde".toList(), 3)
- * [[a, b, c], [a, b, d], [a, b, e], [a, c, d], [a, c, e], [a, d, e], [b, c, d], [b, c, e], [b, d, e], [c, d, e]]
- */
-fun <T> List<T>.combinations(k: Int = size): List<List<T>> =
-    if (isEmpty() || k == 0) {
-        listOf(emptyList())
-    } else {
-        (0 until size).fold(arrayListOf(emptyList<T>())) { acc, i ->
-            val tailCombinations = drop(i + 1).combinations(k - 1).toMutableList()
-            val tailPlusCurrent: Collection<List<T>> = tailCombinations.map { listOf(this[i]) + it }
-            acc.apply {
-                acc.addAll(tailPlusCurrent)
-            }
-        }.filter { it.size == k }
+/** http://tinyurl.com/y9kzqfmp */
+private fun <T> List<T>.plusAtIndex(index: Int, element: T): List<T> {
+    require (index in 0..size) { "Invalid index: $index (size: $size)" }
+    return when (index) {
+        0 -> listOf(element) + this
+        size -> this + element
+        else -> dropLast(size - index) + element + drop(index)
     }
-
-fun <T> List<T>.permutations(): List<List<T>> =
-    (0 until size).fold(listOf()) { acc, i ->
-        acc + when (size) {
-            in 0..1 -> listOf(this)
-            else -> {
-                val listMinusCurrent = take(i) + drop(i + 1)
-                val complementPerms = listMinusCurrent.permutations()
-                complementPerms.map { listOf(this[i]) + it }
-            }
-        }
-    }
-
-// TODO: permutations of size k
-fun <T> List<T>.permutations(k: Int): List<List<T>> = TODO()
-
-
-/**
- * https://brilliant.org/wiki/sum-of-n-n2-or-n3/
- */
-fun sumOfFirstNPositiveIntegers(n: Int) = ((n * (n + 1)) / 2)
-
-/* kotlin.math: available with Kotlin 1.2+, but LeetCode uses 1.1
-import java.lang.Math as nativeMath
-
-public inline fun abs(x: Double): Double = nativeMath.abs(x)
-public inline fun abs(x: Float): Float = nativeMath.abs(x)
-public inline fun abs(n: Int): Int = nativeMath.abs(n)
-public inline fun abs(n: Long): Long = nativeMath.abs(n)
-
-public inline val Double.absoluteValue: Double get() = nativeMath.abs(this)
-public inline val Float.absoluteValue: Float get() = nativeMath.abs(this)
-public inline val Int.absoluteValue: Int get() = nativeMath.abs(this)
-public inline val Long.absoluteValue: Long get() = nativeMath.abs(this)
-
-public inline fun Double.pow(x: Double): Double = nativeMath.pow(this, x)
-public inline fun Double.pow(n: Int): Double = nativeMath.pow(this, n.toDouble())
-
-public inline fun sqrt(x: Double): Double = nativeMath.sqrt(x)
-public inline fun sqrt(x: Float): Float = nativeMath.sqrt(x.toDouble()).toFloat()
-
-
-// BigInteger/BigDecimal
-public inline operator fun BigInteger.plus(other: BigInteger): BigInteger = this.add(other)
-public inline operator fun BigInteger.minus(other: BigInteger): BigInteger = this.subtract(other)
-public inline operator fun BigInteger.times(other: BigInteger): BigInteger = this.multiply(other)
-public inline operator fun BigInteger.div(other: BigInteger): BigInteger = this.divide(other)
-public inline operator fun BigInteger.rem(other: BigInteger): BigInteger = this.remainder(other)
-public inline operator fun BigInteger.unaryMinus(): BigInteger = this.negate()
-public inline operator fun BigInteger.inc(): BigInteger = this.add(BigInteger.ONE)
-public inline operator fun BigInteger.dec(): BigInteger = this.subtract(BigInteger.ONE)
-public inline fun BigInteger.inv(): BigInteger = this.not()
-public inline infix fun BigInteger.and(other: BigInteger): BigInteger = this.and(other)
-public inline infix fun BigInteger.or(other: BigInteger): BigInteger = this.or(other)
-public inline infix fun BigInteger.xor(other: BigInteger): BigInteger = this.xor(other)
-public inline infix fun BigInteger.shl(n: Int): BigInteger = this.shiftLeft(n)
-public inline infix fun BigInteger.shr(n: Int): BigInteger = this.shiftRight(n)
-public inline fun Int.toBigInteger(): BigInteger = BigInteger.valueOf(this.toLong())
-public inline fun Long.toBigInteger(): BigInteger = BigInteger.valueOf(this)
-public inline fun BigInteger.toBigDecimal(): BigDecimal = BigDecimal(this)
-public inline fun BigInteger.toBigDecimal(scale: Int = 0, mathContext: MathContext = MathContext.UNLIMITED): BigDecimal =
-        BigDecimal(this, scale, mathContext)
-
-public inline operator fun BigDecimal.plus(other: BigDecimal): BigDecimal = this.add(other)
-public inline operator fun BigDecimal.minus(other: BigDecimal): BigDecimal = this.subtract(other)
-public inline operator fun BigDecimal.times(other: BigDecimal): BigDecimal = this.multiply(other)
-public inline operator fun BigDecimal.div(other: BigDecimal): BigDecimal = this.divide(other, RoundingMode.HALF_EVEN)
-public inline operator fun BigDecimal.mod(other: BigDecimal): BigDecimal = this.remainder(other)
-public inline operator fun BigDecimal.rem(other: BigDecimal): BigDecimal = this.remainder(other)
-public inline operator fun BigDecimal.unaryMinus(): BigDecimal = this.negate()
-public inline operator fun BigDecimal.inc(): BigDecimal = this.add(BigDecimal.ONE)
-public inline operator fun BigDecimal.dec(): BigDecimal = this.subtract(BigDecimal.ONE)
-public inline fun Int.toBigDecimal(): BigDecimal = BigDecimal(this)
-public inline fun Int.toBigDecimal(mathContext: MathContext): BigDecimal = BigDecimal(this, mathContext)
-public inline fun Long.toBigDecimal(): BigDecimal = BigDecimal(this)
-public inline fun Long.toBigDecimal(mathContext: MathContext): BigDecimal = BigDecimal(this, mathContext)
-*/
+}

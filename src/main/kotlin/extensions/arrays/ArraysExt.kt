@@ -65,13 +65,13 @@ fun <T> Array<T>.frequencyMap(): Map<T, Int> = groupingBy { it }.eachCount()
  * Return a map where the entries are (element -> List of indices containing element)
  */
 fun IntArray.valueToIndicesMap(): Map<Int, List<Int>> = withIndex()
-    .groupBy(keySelector = { (i, n) -> n }, valueTransform = { (i, n) -> i })
+    .groupBy(keySelector = { it.value }, valueTransform = { it.index })
 
 /**
  * Return a map where the entries are (element -> List of indices containing element)
  */
 fun <T> Array<T>.valueToIndicesMap(): Map<T, List<Int>> = withIndex()
-    .groupBy(keySelector = { (i, n) -> n }, valueTransform = { (i, n) -> i })
+    .groupBy(keySelector = { it.value }, valueTransform = { it.index })
 
 
 /**
