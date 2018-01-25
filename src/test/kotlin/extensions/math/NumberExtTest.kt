@@ -1,14 +1,5 @@
 package extensions.math
 
-import extensions.math.charForDigit
-import extensions.math.digits
-import extensions.math.factorial
-import extensions.math.leastSignificantDigit
-import extensions.math.mostSignificantDigit
-import extensions.math.nLeastSignificantDigits
-import extensions.math.nMostSignificantDigits
-import extensions.math.numberOfDigits
-import extensions.math.roundedToNDecimalPlaces
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigInteger

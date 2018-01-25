@@ -1,7 +1,6 @@
 package extensions.math
 
 import org.junit.Assert.assertEquals
-import org.junit.Ignore
 import org.junit.Test
 import java.math.BigInteger
 import kotlin.system.measureTimeMillis
@@ -14,7 +13,7 @@ class MathExtTest {
         val runs = 10
         (1..runs).forEach {
             val ms = measureTimeMillis {
-                //        assertEquals(setOf(emptyList<Int>()), emptySet<Int>().powerSet())
+                assertEquals(setOf(emptySet<Int>()), emptySet<Int>().powerSet())
                 assertEquals(setOf(setOf(), setOf(1)), setOf(1).powerSet())
                 assertEquals(setOf(setOf(), setOf(1), setOf(2), setOf(1, 2)), setOf(1, 2).powerSet())
                 assertEquals(
@@ -33,22 +32,6 @@ class MathExtTest {
         println("adjustedTimes for powerSet: $adjustedTimes")
         println("average run: ${adjustedTimes.average().roundedToNDecimalPlaces(2)}")
     }
-
-//    @Test
-//    fun powerSetList() {
-//        assertEquals(listOf(emptyList<Int>()), emptyList<Int>().powerSet())
-//        assertEquals(listOf(listOf(), listOf(1)), listOf(1).powerSet())
-//        assertEquals(listOf(listOf(), listOf(1), listOf(2), listOf(1, 2)), listOf(1, 2).powerSet())
-//        assertEquals(
-//            listOf(listOf(), listOf(1), listOf(2), listOf(3), listOf(1, 2), listOf(1, 3), listOf(2, 3), listOf(1, 2, 3)),
-//            listOf(1, 2, 3).powerSet())
-//        assertEquals(
-//            listOf(listOf(), listOf(1), listOf(2), listOf(3), listOf(4),
-//                listOf(1, 2), listOf(1, 3), listOf(1, 4), listOf(2, 3), listOf(2, 4), listOf(3, 4),
-//                listOf(1, 2, 3), listOf(1, 2, 4), listOf(1, 3, 4), listOf(2, 3, 4),
-//                listOf(1, 2, 3, 4)),
-//            listOf(1, 2, 3, 4).powerSet())
-//    }
 
     @Test
     fun combinationsList() {
