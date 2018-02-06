@@ -1,10 +1,24 @@
 package extensions.math
 
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigInteger
 
 class NumberExtTest {
+
+    @Test
+    fun isEven() {
+        setOf(-10, -4, 0, 2, 4, 6, 20, 100, 128).forEach { Assert.assertTrue(it.isEven) }
+        setOf(-9, -3, -1, 1, 3, 7, 21, 101, 127).forEach { Assert.assertFalse(it.isEven) }
+    }
+
+
+    @Test
+    fun isOdd() {
+        setOf(-10, -4, 0, 2, 4, 6, 20, 100, 128).forEach { Assert.assertFalse(it.isOdd) }
+        setOf(-9, -3, -1, 1, 3, 7, 21, 101, 127).forEach { Assert.assertTrue(it.isOdd) }
+    }
 
     @Test
     fun charForDigit() {
@@ -60,19 +74,6 @@ class NumberExtTest {
     @Test
     fun nLeastSignificantDigits() {
         assertEquals(23, 123.nLeastSignificantDigits(2))
-    }
-
-    @Test
-    fun factorial() {
-        assertEquals(BigInteger.ONE, 0.factorial())
-        assertEquals(BigInteger.ONE, 1.factorial())
-        assertEquals(BigInteger.valueOf(2L), 2.factorial())
-        assertEquals(BigInteger.valueOf(6L), 3.factorial())
-        assertEquals(BigInteger.valueOf(24L), 4.factorial())
-        assertEquals(BigInteger.valueOf(120L), 5.factorial())
-        assertEquals(BigInteger.valueOf(720L), 6.factorial())
-        assertEquals(BigInteger.valueOf(5040L), 7.factorial())
-        assertEquals(BigInteger.valueOf(3628800L), 10.factorial())
     }
 
     @Test

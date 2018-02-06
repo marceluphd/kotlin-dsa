@@ -34,7 +34,7 @@ fun String.characterFrequencies(caseSensitive: Boolean = true): Map<Char, Int> =
 
 
 /**
- * Return a list of the distinct chars in the string.
+ * Return a list of the distinct chars in the string (retaining order).
  */
 fun String.distinctChars(): List<Char> = toCharArray().distinct()
 

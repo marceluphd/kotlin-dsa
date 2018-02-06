@@ -14,7 +14,7 @@ import kotlin.math.pow
  ********************/
 
 val Int.isEven: Boolean get() = this % 2 == 0
-val Int.isOdd: Boolean get() = this % 2 == 1
+val Int.isOdd: Boolean get() = this % 2 != 0
 
 /**
  * Applies Java's [Character.forDigit].

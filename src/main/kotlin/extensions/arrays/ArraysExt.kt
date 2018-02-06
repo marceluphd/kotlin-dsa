@@ -60,7 +60,6 @@ fun IntArray.frequencyMap(): Map<Int, Int> = groupingBy { it }.eachCount()
  */
 fun <T> Array<T>.frequencyMap(): Map<T, Int> = groupingBy { it }.eachCount()
 
-
 /**
  * Return a map where the entries are (element -> List of indices containing element)
  */
@@ -72,7 +71,6 @@ fun IntArray.valueToIndicesMap(): Map<Int, List<Int>> = withIndex()
  */
 fun <T> Array<T>.valueToIndicesMap(): Map<T, List<Int>> = withIndex()
     .groupBy(keySelector = { it.value }, valueTransform = { it.index })
-
 
 /**
  * **Mutating** - Swap the elements at indices [i] and [j].
@@ -137,6 +135,19 @@ fun CharArray.reverseElementsInRange(indexRange: IntRange) {
     }
 }
 
+/**
+ * Return the first element (nullable) and the tail of the list.
+ */
+fun IntArray.headAndTail(): Pair<Int?, IntArray> {
+    if (isEmpty()) return (null to intArrayOf())
+    return firstOrNull() to sliceArray(1 until size)
+}
+
+fun IntArray.headAndTailArrays(): Pair<IntArray, IntArray> {
+    if (isEmpty()) return (intArrayOf() to intArrayOf())
+    return sliceArray(0 until 1) to sliceArray(1 until size)
+}
+
 fun <T : Comparable<T>> Array<T>.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
 fun IntArray.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
 fun CharArray.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
@@ -153,23 +164,33 @@ fun DoubleArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> t
 fun FloatArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
 fun LongArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
 
-// TODO: chunked, windowed, etc.
 
 /* Matrices - Array<IntArray> */
 
 typealias Matrix = Array<IntArray>
 
-internal val Matrix.rows: Int get() = size
-internal val Matrix.columns: Int get() = if (isEmpty()) 0 else this[0].size
+val Matrix.rows: Int get() = size
+val Matrix.columns: Int get() = if (isEmpty()) 0 else this[0].size
 
-internal val Matrix.lastRow: Int get() = lastIndex
-internal val Matrix.lastColumn: Int get() = if (isEmpty()) -1 else this[0].lastIndex
+val Matrix.rowRange: IntRange get() = 0..lastIndex
+val Matrix.columnRange: IntRange get() = if (isEmpty()) 0..0 else 0..this[0].lastIndex
 
-internal fun Matrix.toList(): List<List<Int>> = fold(emptyList()) { acc, intArr ->
-    acc.plusElement(intArr.toList())
+val Matrix.lastRow: Int get() = lastIndex
+val Matrix.lastColumn: Int get() = if (isEmpty()) -1 else this[0].lastIndex
+
+fun Matrix.toList(): List<List<Int>> = fold(mutableListOf()) { acc, intArr ->
+    acc.apply {
+        acc.add(intArr.toList())
+    }
 }
 
-internal fun Matrix.transpose(): Matrix {
+
+/**
+ * Create a 2D array from a list of lists.
+ */
+fun List<List<Int>>.toMatrix(): Matrix = Array(size = size, init = { i -> this[i].toIntArray() })
+
+fun Matrix.transpose(): Matrix {
     val transposed: Matrix = Array(columns, { IntArray(rows) })
     (0..lastRow).forEach { i ->
         (0..lastColumn).forEach { j ->

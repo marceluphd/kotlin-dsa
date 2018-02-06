@@ -1,16 +1,12 @@
 package extensions.lists
 
-import append
-import appendAll
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import prepend
-import prependAll
 
-class MutableListExtKtTest {
+class MutableListExtTest {
 
     private lateinit var emptyList: MutableList<Int>
     private lateinit var mList: MutableList<Int>
@@ -97,4 +93,12 @@ class MutableListExtKtTest {
         assertEquals(listOf(1, 2, 3), emptyList)
     }
 
+    @Test
+    fun swap() {
+        val strings = mutableListOf("foo", "bar", "foo", "baz")
+        strings.swap(0, 2)
+        assertEquals(mutableListOf("foo", "bar", "foo", "baz"), strings)
+        strings.swap(1, 3)
+        assertEquals(mutableListOf("foo", "baz", "foo", "bar"), strings)
+    }
 }

@@ -1,14 +1,9 @@
-package extensions.string
+package extensions.strings
 
-import extensions.strings.characterFrequencies
-import extensions.strings.isAllCaps
-import extensions.strings.isAllLowercase
-import extensions.strings.reverseCharsInRange
-import extensions.strings.swappingCharsAt
-import extensions.strings.toSortedString
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class StringExtTest {
 
@@ -52,10 +47,19 @@ class StringExtTest {
 
     @Test
     fun characterFrequencies() {
-        assertEquals(mapOf('k' to 1, 'o' to 1, 't' to 1, 'l' to 1, 'i' to 1, 'n' to 1),
-                "kotlin".characterFrequencies())
+        assertEquals(
+            mapOf('k' to 1, 'o' to 1, 't' to 1, 'l' to 1, 'i' to 1, 'n' to 1),
+            "kotlin".characterFrequencies()
+        )
         assertEquals(mapOf('f' to 1, 'o' to 2), "foo".characterFrequencies())
         assertEquals(mapOf('f' to 1, 'o' to 2), "FOo".characterFrequencies())
+    }
+
+    @Test
+    fun distinctChars() {
+        assertEquals(listOf('f', 'o', 'b', 'a', 'r'), "foobar".distinctChars())
+        assertEquals(listOf('k', 'o', 't', 'l', 'i', 'n'), "kotlin".distinctChars())
+        assertEquals(listOf('v', 'o', 'd'), "voodoo".distinctChars())
     }
 
     @Test

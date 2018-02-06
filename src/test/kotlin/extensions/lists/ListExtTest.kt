@@ -7,26 +7,38 @@ import org.junit.Test
 
 class ListExtTest {
 
+    private val nestedList3x4 = listOf(
+        listOf(1, 2, 3, 4),
+        listOf(5, 6, 7, 8),
+        listOf(9, 10, 11, 12)
+    )
+
+    private val nestedList1x3 = listOf(listOf(1, 2, 3))
+
     @Test
     fun frequencyMap() {
         assertEquals(
-                mapOf("foo" to 2, "bar" to 1, "baz" to 1),
-                listOf("foo", "bar", "foo", "baz").frequencyMap())
+            mapOf("foo" to 2, "bar" to 1, "baz" to 1),
+            listOf("foo", "bar", "foo", "baz").frequencyMap()
+        )
 
         assertEquals(
-                mapOf(1 to 2, 7 to 1),
-                listOf(1, 7, 1).frequencyMap())
+            mapOf(1 to 2, 7 to 1),
+            listOf(1, 7, 1).frequencyMap()
+        )
     }
 
     @Test
     fun valueToIndicesMap() {
         assertEquals(
-                mapOf("foo" to listOf(0, 2), "bar" to listOf(1), "baz" to listOf(3)),
-                listOf("foo", "bar", "foo", "baz").valueToIndicesMap())
+            mapOf("foo" to listOf(0, 2), "bar" to listOf(1), "baz" to listOf(3)),
+            listOf("foo", "bar", "foo", "baz").valueToIndicesMap()
+        )
 
         assertEquals(
-                mapOf(1 to listOf(0, 2), 7 to listOf(1)),
-                listOf(1, 7, 1).valueToIndicesMap())
+            mapOf(1 to listOf(0, 2), 7 to listOf(1)),
+            listOf(1, 7, 1).valueToIndicesMap()
+        )
     }
 
     @Test
@@ -62,6 +74,20 @@ class ListExtTest {
     }
 
     @Test
+    fun headAndTail() {
+        assertEquals(Pair(1, listOf(2, 3, 4)), listOf(1, 2, 3, 4).headAndTail())
+        assertEquals(Pair(1, emptyList<Int>()), listOf(1).headAndTail())
+        assertEquals(Pair(null, emptyList<Int>()), emptyList<Int>().headAndTail())
+    }
+
+    @Test
+    fun headAndTailLists() {
+        assertEquals(Pair(listOf(1), listOf(2, 3, 4)), listOf(1, 2, 3, 4).headAndTailLists())
+        assertEquals(Pair(listOf(1), emptyList<Int>()), listOf(1).headAndTailLists())
+        assertEquals(Pair(emptyList<Int>(), emptyList<Int>()), emptyList<Int>().headAndTailLists())
+    }
+
+    @Test
     fun isSorted() {
         assertTrue(listOf(1, 2, 3, 4).isSorted())
         assertFalse(listOf(4, 3, 2, 1).isSorted())
@@ -73,5 +99,21 @@ class ListExtTest {
         assertFalse(listOf(1, 2, 3, 4).isSortedDescending())
         assertTrue(listOf(4, 3, 2, 1).isSortedDescending())
         assertFalse(listOf(1, 2, 4, 3).isSortedDescending())
+    }
+
+    @Test
+    fun nestedListProperties() {
+        assertEquals(3, nestedList3x4.rows)
+        assertEquals(4, nestedList3x4.columns)
+        assertEquals(2, nestedList3x4.lastRow)
+        assertEquals(3, nestedList3x4.lastColumn)
+        assertEquals((0 until 3), nestedList3x4.rowRange)
+        assertEquals((0 until 4), nestedList3x4.columnRange)
+        assertEquals(1, nestedList1x3.rows)
+        assertEquals(3, nestedList1x3.columns)
+        assertEquals(0, nestedList1x3.lastRow)
+        assertEquals(2, nestedList1x3.lastColumn)
+        assertEquals((0 until 1), nestedList1x3.rowRange)
+        assertEquals((0 until 3), nestedList1x3.columnRange)
     }
 }

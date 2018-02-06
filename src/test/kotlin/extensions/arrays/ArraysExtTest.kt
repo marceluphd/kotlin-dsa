@@ -1,9 +1,6 @@
 package extensions.arrays
 
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Test
 
 class ArraysExtTest {
@@ -18,10 +15,13 @@ class ArraysExtTest {
     private val emptyCharArray = charArrayOf()
 
     private val matrix3x4: Matrix = Array(3, { i ->
-        IntArray(4, { j -> (i * 4) + j} )
+        IntArray(4, { j -> (i * 4) + j })
     })
+
     private val matrix1x3: Matrix = Array(1, { IntArray(3, { i -> i + 1 }) })
 
+    private val list3x4: List<List<Int>> = listOf(listOf(0, 1, 2, 3), listOf(4, 5, 6, 7), listOf(8, 9, 10, 11))
+    private val list1x3: List<List<Int>> = listOf(listOf(1, 2, 3))
 
     @Test
     fun isBlank() {
@@ -67,30 +67,35 @@ class ArraysExtTest {
     @Test
     fun groupingBy() {
         assertEquals(
-                mapOf(1 to 2, 7 to 1),
-                intArrayOf(1, 7, 1).groupingBy { it }.eachCount())
+            mapOf(1 to 2, 7 to 1),
+            intArrayOf(1, 7, 1).groupingBy { it }.eachCount()
+        )
     }
 
     @Test
     fun frequencyMap() {
         assertEquals(
-                mapOf("foo" to 2, "bar" to 1, "baz" to 1),
-                arrayOf("foo", "bar", "foo", "baz").frequencyMap())
+            mapOf("foo" to 2, "bar" to 1, "baz" to 1),
+            arrayOf("foo", "bar", "foo", "baz").frequencyMap()
+        )
 
         assertEquals(
-                mapOf(1 to 2, 7 to 1),
-                intArrayOf(1, 7, 1).frequencyMap())
+            mapOf(1 to 2, 7 to 1),
+            intArrayOf(1, 7, 1).frequencyMap()
+        )
     }
 
     @Test
     fun valueToIndicesMap() {
         assertEquals(
-                mapOf("foo" to listOf(0, 2), "bar" to listOf(1), "baz" to listOf(3)),
-                arrayOf("foo", "bar", "foo", "baz").valueToIndicesMap())
+            mapOf("foo" to listOf(0, 2), "bar" to listOf(1), "baz" to listOf(3)),
+            arrayOf("foo", "bar", "foo", "baz").valueToIndicesMap()
+        )
 
         assertEquals(
-                mapOf(1 to listOf(0, 2), 7 to listOf(1)),
-                intArrayOf(1, 7, 1).valueToIndicesMap())
+            mapOf(1 to listOf(0, 2), 7 to listOf(1)),
+            intArrayOf(1, 7, 1).valueToIndicesMap()
+        )
     }
 
     @Test
@@ -115,12 +120,35 @@ class ArraysExtTest {
 
         intArray.reverseElementsInRange(0..2)
         assertArrayEquals(intArrayOf(3, 2, 1), intArray)
+
+        charArray.reverseElementsInRange(0..2)
+        assertArrayEquals(charArrayOf('3', '2', '1'), charArray)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `reverseElementsInRange with invalid range`() {
         val strArr = arrayOf("foo", "bar", "foo", "baz")
         strArr.reverseElementsInRange(2..4)
+    }
+
+    @Test
+    fun headAndTailArrays() {
+        assertArrayEquals(intArrayOf(1), intArrayOf(1, 2, 3, 4).headAndTailArrays().first)
+        assertArrayEquals(intArrayOf(2, 3, 4), intArrayOf(1, 2, 3, 4).headAndTailArrays().second)
+        assertArrayEquals(intArrayOf(1), intArrayOf(1).headAndTailArrays().first)
+        assertArrayEquals(intArrayOf(), intArrayOf(1).headAndTailArrays().second)
+        assertArrayEquals(intArrayOf(), intArrayOf().headAndTailArrays().first)
+        assertArrayEquals(intArrayOf(), intArrayOf().headAndTailArrays().second)
+    }
+
+    @Test
+    fun headAndTail() {
+        assertEquals(1, intArrayOf(1, 2, 3, 4).headAndTail().first)
+        assertArrayEquals(intArrayOf(2, 3, 4), intArrayOf(1, 2, 3, 4).headAndTail().second)
+        assertEquals(1, intArrayOf(1).headAndTail().first)
+        assertArrayEquals(intArrayOf(), intArrayOf(1).headAndTail().second)
+        assertNull(intArrayOf().headAndTail().first)
+        assertArrayEquals(intArrayOf(), intArrayOf().headAndTail().second)
     }
 
     @Test
@@ -164,27 +192,34 @@ class ArraysExtTest {
         assertEquals(4, matrix3x4.columns)
         assertEquals(2, matrix3x4.lastRow)
         assertEquals(3, matrix3x4.lastColumn)
+        assertEquals((0 until 3), matrix3x4.rowRange)
+        assertEquals((0 until 4), matrix3x4.columnRange)
         assertEquals(1, matrix1x3.rows)
         assertEquals(3, matrix1x3.columns)
         assertEquals(0, matrix1x3.lastRow)
         assertEquals(2, matrix1x3.lastColumn)
+        assertEquals((0 until 1), matrix1x3.rowRange)
+        assertEquals((0 until 3), matrix1x3.columnRange)
     }
 
     @Test
     fun toList() {
-        assertEquals(
-                listOf(listOf(0, 1, 2, 3), listOf(4, 5, 6, 7), listOf(8, 9, 10, 11)),
-                matrix3x4.toList())
-        assertEquals(
-                listOf(listOf(1, 2, 3)),
-                matrix1x3.toList())
+        assertEquals(list3x4, matrix3x4.toList())
+        assertEquals(list1x3, matrix1x3.toList())
+    }
+
+    @Test
+    fun toMatrix() {
+        assertArrayEquals(list1x3.toMatrix(), matrix1x3)
+        assertArrayEquals(list3x4.toMatrix(), matrix3x4)
     }
 
     @Test
     fun transpose() {
         assertEquals(listOf(listOf(1), listOf(2), listOf(3)), matrix1x3.transpose().toList())
         assertEquals(
-                listOf(listOf(0, 4, 8), listOf(1, 5, 9), listOf(2, 6, 10), listOf(3, 7, 11)),
-                matrix3x4.transpose().toList())
+            listOf(listOf(0, 4, 8), listOf(1, 5, 9), listOf(2, 6, 10), listOf(3, 7, 11)),
+            matrix3x4.transpose().toList()
+        )
     }
 }

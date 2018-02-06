@@ -1,11 +1,52 @@
 package extensions.math
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.math.BigInteger
 import kotlin.system.measureTimeMillis
 
 class MathExtTest {
+
+    private val primesUnder200 = listOf(
+        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
+        67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179,
+        181, 191, 193, 197, 199
+    )
+
+    @Test
+    fun isPrime() {
+        (0..200).forEach { i ->
+            if (primesUnder200.contains(i)) {
+                assertTrue(i.isPrime())
+            } else {
+                assertFalse(i.isPrime())
+            }
+        }
+    }
+
+    @Test
+    fun sumOfFirstNPositiveIntegers() {
+        assertEquals(1, sumOfFirstNPositiveIntegers(1))
+        assertEquals(3, sumOfFirstNPositiveIntegers(2))
+        assertEquals(15, sumOfFirstNPositiveIntegers(5))
+        assertEquals(55, sumOfFirstNPositiveIntegers(10))
+        assertEquals(5050, sumOfFirstNPositiveIntegers(100))
+    }
+
+    @Test
+    fun factorial() {
+        assertEquals(BigInteger.ONE, 0.factorial())
+        assertEquals(BigInteger.ONE, 1.factorial())
+        assertEquals(BigInteger.valueOf(2L), 2.factorial())
+        assertEquals(BigInteger.valueOf(6L), 3.factorial())
+        assertEquals(BigInteger.valueOf(24L), 4.factorial())
+        assertEquals(BigInteger.valueOf(120L), 5.factorial())
+        assertEquals(BigInteger.valueOf(720L), 6.factorial())
+        assertEquals(BigInteger.valueOf(5040L), 7.factorial())
+        assertEquals(BigInteger.valueOf(3628800L), 10.factorial())
+    }
 
     @Test
     fun powerSet() {
@@ -18,13 +59,17 @@ class MathExtTest {
                 assertEquals(setOf(setOf(), setOf(1), setOf(2), setOf(1, 2)), setOf(1, 2).powerSet())
                 assertEquals(
                     setOf(setOf(), setOf(1), setOf(2), setOf(3), setOf(1, 2), setOf(1, 3), setOf(2, 3), setOf(1, 2, 3)),
-                    setOf(1, 2, 3).powerSet())
+                    setOf(1, 2, 3).powerSet()
+                )
                 assertEquals(
-                    setOf(setOf(), setOf(1), setOf(2), setOf(3), setOf(4),
+                    setOf(
+                        setOf(), setOf(1), setOf(2), setOf(3), setOf(4),
                         setOf(1, 2), setOf(1, 3), setOf(1, 4), setOf(2, 3), setOf(2, 4), setOf(3, 4),
                         setOf(1, 2, 3), setOf(1, 2, 4), setOf(1, 3, 4), setOf(2, 3, 4),
-                        setOf(1, 2, 3, 4)),
-                    listOf(1, 2, 3, 4).powerSet())
+                        setOf(1, 2, 3, 4)
+                    ),
+                    listOf(1, 2, 3, 4).powerSet()
+                )
             }
             times += ms
         }
@@ -34,111 +79,58 @@ class MathExtTest {
     }
 
     @Test
-    fun combinationsList() {
+    fun combinations() {
         val times = arrayListOf<Long>()
         val runs = 15
         (1..runs).forEach {
             val ms = measureTimeMillis {
                 assertEquals(
                     setOf(emptySet<Int>()),
-                    listOf(1, 2, 3).combinations(0)
+                    setOf(1, 2, 3).combinations(k = 0)
                 )
 
                 assertEquals(
                     setOf(setOf(1), setOf(2), setOf(3)),
-                    listOf(1, 2, 3).combinations(1)
+                    setOf(1, 2, 3).combinations(k = 1)
                 )
 
                 assertEquals(
                     setOf(setOf(1, 2), setOf(1, 3), setOf(2, 3)),
-                    listOf(1, 2, 3).combinations(2)
+                    setOf(1, 2, 3).combinations(k = 2)
                 )
 
                 assertEquals(
                     setOf(setOf(1, 2, 3)),
-                    listOf(1, 2, 3).combinations()
+                    setOf(1, 2, 3).combinations(k = 3)
                 )
 
                 assertEquals(
                     setOf(
-                        setOf(0, 1, 2, 3),
-                        setOf(0, 1, 2, 4),
-                        setOf(0, 1, 2, 5),
-                        setOf(0, 1, 3, 4),
-                        setOf(0, 1, 3, 5),
-                        setOf(0, 1, 4, 5),
-                        setOf(0, 2, 3, 4),
-                        setOf(0, 2, 3, 5),
-                        setOf(0, 2, 4, 5),
-                        setOf(0, 3, 4, 5),
                         setOf(1, 2, 3, 4),
                         setOf(1, 2, 3, 5),
+                        setOf(1, 2, 3, 6),
                         setOf(1, 2, 4, 5),
+                        setOf(1, 2, 4, 6),
+                        setOf(1, 2, 5, 6),
                         setOf(1, 3, 4, 5),
-                        setOf(2, 3, 4, 5)
+                        setOf(1, 3, 4, 6),
+                        setOf(1, 3, 5, 6),
+                        setOf(1, 4, 5, 6),
+                        setOf(2, 3, 4, 5),
+                        setOf(2, 3, 4, 6),
+                        setOf(2, 3, 5, 6),
+                        setOf(2, 4, 5, 6),
+                        setOf(3, 4, 5, 6)
                     ),
-                    listOf(0, 1, 2, 3, 4, 5).combinations(k = 4)
+                    setOf(1, 2, 3, 4, 5, 6).combinations(k = 4)
                 )
+
+                setOf((1..100).toList().toSet()).combinations(k = 10)
 
             }
             times += ms
         }
-        val adjustedTimes = times.drop(2)   // 1st one or two affected by test startup
-        println("adjustedTimes for combinationsList: $adjustedTimes")
-        println("average run: ${adjustedTimes.average().roundedToNDecimalPlaces(2)}")
-    }
-
-    @Test
-    fun combinationsSet() {
-        val times = arrayListOf<Long>()
-        val runs = 15
-        (1..runs).forEach {
-            val ms = measureTimeMillis {
-                assertEquals(
-                    setOf(emptySet<Int>()),
-                    setOf(1, 2, 3).combinations(0)
-                )
-
-                assertEquals(
-                    setOf(setOf(1), setOf(2), setOf(3)),
-                    setOf(1, 2, 3).combinations(1)
-                )
-
-                assertEquals(
-                    setOf(setOf(1, 2), setOf(1, 3), setOf(2, 3)),
-                    setOf(1, 2, 3).combinations(2)
-                )
-
-                assertEquals(
-                    setOf(setOf(1, 2, 3)),
-                    setOf(1, 2, 3).combinations()
-                )
-
-                assertEquals(
-                    setOf(
-                        setOf(0, 1, 2, 3),
-                        setOf(0, 1, 2, 4),
-                        setOf(0, 1, 2, 5),
-                        setOf(0, 1, 3, 4),
-                        setOf(0, 1, 3, 5),
-                        setOf(0, 1, 4, 5),
-                        setOf(0, 2, 3, 4),
-                        setOf(0, 2, 3, 5),
-                        setOf(0, 2, 4, 5),
-                        setOf(0, 3, 4, 5),
-                        setOf(1, 2, 3, 4),
-                        setOf(1, 2, 3, 5),
-                        setOf(1, 2, 4, 5),
-                        setOf(1, 3, 4, 5),
-                        setOf(2, 3, 4, 5)
-                    ),
-                    setOf(0, 1, 2, 3, 4, 5).combinations(k = 4)
-                )
-
-            }
-            times += ms
-        }
-        val adjustedTimes = times.drop(2)
+        val adjustedTimes = times.drop(3)
         println("adjustedTimes for combinationsSet: $adjustedTimes")
         println("average run: ${adjustedTimes.average().roundedToNDecimalPlaces(2)}")
     }
@@ -149,6 +141,12 @@ class MathExtTest {
         val runs = 8
         (1..runs).forEach {
             val ms = measureTimeMillis {
+
+                assertEquals(
+                    emptySet<Int>(),
+                    emptyList<Int>().permutations()
+                )
+
                 assertEquals(
                     setOf(
                         listOf(1, 2, 3),
@@ -159,6 +157,27 @@ class MathExtTest {
                         listOf(3, 2, 1)
                     ),
                     listOf(1, 2, 3).permutations()
+                )
+
+                assertEquals(
+                    setOf(
+                        listOf(1, 1, 3),
+                        listOf(1, 1, 3),
+                        listOf(1, 3, 1),
+                        listOf(1, 3, 1),
+                        listOf(3, 1, 1),
+                        listOf(3, 1, 1)
+                    ),
+                    listOf(1, 1, 3).permutations(distinct = false)
+                )
+
+                assertEquals(
+                    setOf(
+                        listOf(1, 1, 3),
+                        listOf(1, 3, 1),
+                        listOf(3, 1, 1)
+                    ),
+                    listOf(1, 1, 3).permutations(distinct = true)
                 )
 
                 assertEquals(

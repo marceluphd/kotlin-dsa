@@ -9,8 +9,43 @@ import org.junit.Test
 class PairExtTest {
 
     @Test
+    fun toBooleanArray() {
+        assertArrayEquals(booleanArrayOf(true, false), Pair(true, false).toBooleanArray())
+    }
+
+    @Test
+    fun toByteArray() {
+        assertArrayEquals(byteArrayOf(0b01, 0b11), Pair<Byte, Byte>(0b01, 0b11).toByteArray())
+    }
+
+    @Test
+    fun toCharArray() {
+        assertArrayEquals(charArrayOf('a', 'b'), Pair('a', 'b').toCharArray())
+    }
+
+    @Test
+    fun toDoubleArray() {
+        assertArrayEquals(doubleArrayOf(1.0, 2.0), Pair(1.0, 2.0).toDoubleArray(), 0.000001)
+    }
+
+    @Test
+    fun toFloatArray() {
+        assertArrayEquals(floatArrayOf(123.4f, 567.8f), Pair(123.4f, 567.8f).toFloatArray(), 0.000001f)
+    }
+
+    @Test
     fun toIntArray() {
         assertArrayEquals(intArrayOf(1, 2), Pair(1, 2).toIntArray())
+    }
+
+    @Test
+    fun toLongArray() {
+        assertArrayEquals(longArrayOf(1234L, 5678L), Pair(1234L, 5678L).toLongArray())
+    }
+
+    @Test
+    fun toShortArray() {
+        assertArrayEquals(shortArrayOf(0, 1), Pair<Short, Short>(0, 1).toShortArray())
     }
 
     @Test
