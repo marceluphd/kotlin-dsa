@@ -123,14 +123,14 @@ class PairExtTest {
     }
 
     @Test
-    fun reverse() {
-        assertEquals(Pair(9, 7), Pair(7, 9).reverse())
+    fun reversed() {
+        assertEquals(Pair(9, 7), Pair(7, 9).reversed())
     }
 
     @Test
-    fun reverseIf() {
-        assertEquals(Pair(9, 7), Pair(7, 9).reverseIf { it.first < it.second })
-        assertEquals(Pair(7, 9), Pair(7, 9).reverseIf { it.first > it.second })
+    fun reversedIf() {
+        assertEquals(Pair(9, 7), Pair(7, 9).reversedIf { it.first < it.second })
+        assertEquals(Pair(7, 9), Pair(7, 9).reversedIf { it.first > it.second })
     }
 
     @Test

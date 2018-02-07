@@ -34,8 +34,8 @@ fun <T : Any?> Pair<T?, T?>.neitherNull(): Boolean = first != null && second != 
 infix fun <A, B, C> Pair<A, B>.and(that: C): Triple<A, B, C> = Triple(this.first, this.second, that)
 
 // Flip the pair's order
-fun <T, U> Pair<T, U>.reverse() = Pair(second, first)
-inline fun <T> Pair<T, T>.reverseIf(predicate: (Pair<T, T>) -> Boolean) =
+fun <T, U> Pair<T, U>.reversed() = Pair(second, first)
+inline fun <T> Pair<T, T>.reversedIf(predicate: (Pair<T, T>) -> Boolean) =
     if (predicate(this)) Pair(second, first) else this
 
 fun <T> Pair<T, T>.contains(value: T) = first == value || second == value
