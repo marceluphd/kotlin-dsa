@@ -5,6 +5,16 @@ package extensions.lists
  */
 
 /**
+ * Returns the first and second halves of the list.
+ * If the list is odd-sized, the first half is larger.
+ */
+val <T> List<T>.halves: Pair<List<T>, List<T>>
+    get() = when (size) {
+        0 -> Pair(emptyList(), emptyList())
+        else -> slice(0..lastIndex / 2) to slice((lastIndex / 2) + 1..lastIndex)
+    }
+
+/**
  * Return a map where the entries are (element -> # of occurrences)
  */
 fun <T> List<T>.frequencyMap(): Map<T, Int> = groupingBy { it }.eachCount()

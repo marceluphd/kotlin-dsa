@@ -12,9 +12,7 @@ fun <T : Comparable<T>> quickSort(elements: List<T>): List<T> =
             val pivot = elements.first()
             val nonPivotElements = elements.drop(1)
             val (smaller, larger) = nonPivotElements.partition { it < pivot }
-            quickSort(smaller) + pivot + quickSort(
-                larger
-            )
+            quickSort(smaller) + pivot + quickSort(larger)
         }
     }
 
