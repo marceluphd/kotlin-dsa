@@ -199,3 +199,22 @@ fun Matrix.transpose(): Matrix {
     }
     return transposed
 }
+
+
+fun IntArray.subarrays(): List<IntArray> = foldIndexed(mutableListOf()) { i, acc, _ ->
+    (i..lastIndex).forEach { j ->
+        acc.apply { acc.add(sliceArray(i..j)) }
+    }
+    acc
+}
+
+
+fun IntArray.sublists(): List<List<Int>> = foldIndexed(mutableListOf()) { i, acc, _ ->
+    (i..lastIndex).forEach { j ->
+        val sublist = slice(i..j)
+        acc.apply {
+            acc += sublist
+        }
+    }
+    acc
+}

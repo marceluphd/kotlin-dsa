@@ -185,6 +185,58 @@ class ArraysExtTest {
         assertTrue(charArrayOf('a', 'A', '1').isSortedDescending())
     }
 
+    @Test
+    fun subarrays() {
+        val expected = listOf(
+            intArrayOf(1),
+            intArrayOf(1, 2),
+            intArrayOf(1, 2, 3),
+            intArrayOf(1, 2, 3, 4),
+            intArrayOf(1, 2, 3, 4, 5),
+            intArrayOf(2),
+            intArrayOf(2, 3),
+            intArrayOf(2, 3, 4),
+            intArrayOf(2, 3, 4, 5),
+            intArrayOf(3),
+            intArrayOf(3, 4),
+            intArrayOf(3, 4, 5),
+            intArrayOf(4),
+            intArrayOf(4, 5),
+            intArrayOf(5)
+        )
+        val actual = intArrayOf(1, 2, 3, 4, 5).subarrays()
+        assertTrue(expected.size == actual.size)
+        (expected zip actual).forEach { (e, a) ->
+            assertArrayEquals(e, a)
+        }
+    }
+
+    @Test
+    fun sublists() {
+        assertEquals(listOf(listOf(1), listOf(1, 2), listOf(2)), intArrayOf(1, 2).sublists())
+        assertEquals(listOf(listOf(1), listOf(1, 2), listOf(2)), intArrayOf(1, 2).sublists())
+
+        assertEquals(
+            listOf(
+                listOf(1),
+                listOf(1, 2),
+                listOf(1, 2, 3),
+                listOf(1, 2, 3, 4),
+                listOf(1, 2, 3, 4, 5),
+                listOf(2),
+                listOf(2, 3),
+                listOf(2, 3, 4),
+                listOf(2, 3, 4, 5),
+                listOf(3),
+                listOf(3, 4),
+                listOf(3, 4, 5),
+                listOf(4),
+                listOf(4, 5),
+                listOf(5)
+            ), intArrayOf(1, 2, 3, 4, 5).sublists()
+        )
+    }
+
     /* Matrix */
     @Test
     fun matrixProperties() {
