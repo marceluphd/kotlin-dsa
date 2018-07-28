@@ -13,16 +13,15 @@ import extensions.lists.isSorted
  * Time: `O(log n)`
  * Space: `O(1)`
  */
-fun <T : Comparable<T>> binarySearch(sortedList: List<T>, searchKey: T): Int? {
-    var range = 0..sortedList.lastIndex
-    var mid: Int
+fun <T : Comparable<T>> List<T>.binarySearch(searchKey: T): Int? {
+    var range = 0..lastIndex
 
     while (!range.isEmpty()) {
-        mid = (range.start + range.endInclusive) / 2
+        val mid = (range.start + range.endInclusive) / 2
         when {
-            sortedList[mid] == searchKey -> return mid
-            searchKey < sortedList[mid] -> { range = 0 until mid }
-            searchKey > sortedList[mid] -> { range = mid + 1..sortedList.lastIndex }
+            searchKey < this[mid] -> range = (range.start..(mid - 1))
+            searchKey > this[mid] -> range = ((mid + 1)..lastIndex)
+            else -> return mid
         }
     }
 
@@ -34,20 +33,17 @@ fun <T : Comparable<T>> binarySearch(sortedList: List<T>, searchKey: T): Int? {
 const val NOT_FOUND: Int = -1
 
 fun <T : Comparable<T>> binarySearchExercism(list: List<T>, searchKey: T): Int {
-    require(list.isSorted())
+    require(list.isSorted()) { "Binary Search can only be performed on a sorted list" }
 
     var range = 0..list.lastIndex
-    var mid: Int
 
     while (!range.isEmpty()) {
-        mid = (range.start + range.endInclusive) / 2
+        val mid = (range.start + range.endInclusive) / 2
         when {
-            list[mid] == searchKey -> return mid
-            searchKey < list[mid] -> { range = 0 until mid }
-            searchKey > list[mid] -> { range = mid + 1..list.lastIndex }
+            searchKey < list[mid] -> range = (range.start..(mid - 1))
+            searchKey > list[mid] -> range = ((mid + 1)..list.lastIndex)
+            else -> return mid
         }
     }
-
     return NOT_FOUND
 }
-
