@@ -99,7 +99,7 @@ private fun <T> List<T>.permutations(): Set<List<T>> = when (size) {
 
 /** http://tinyurl.com/y9kzqfmp */
 private fun <T> List<T>.plusAtIndex(index: Int, element: T): List<T> {
-    require (index in 0..size) { "Invalid index: $index (size: $size)" }
+    require(index in 0..size) { "Invalid index: $index (size: $size)" }
     return when (index) {
         0 -> listOf(element) + this
         size -> this + element

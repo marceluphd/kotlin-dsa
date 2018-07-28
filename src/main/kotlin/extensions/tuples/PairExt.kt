@@ -39,3 +39,20 @@ inline fun <T> Pair<T, T>.reversedIf(predicate: (Pair<T, T>) -> Boolean) =
     if (predicate(this)) Pair(second, first) else this
 
 fun <T> Pair<T, T>.contains(value: T) = first == value || second == value
+
+
+/* Pair<String, String> */
+/**
+ * @return The shorter of 2 strings (if equal length, the first of the two is returned)
+ */
+fun Pair<String, String>.shorter(): String = if (first.length <= second.length) first else second
+
+/**
+ * @return The longer of 2 strings (if equal length, the second of the two is returned)
+ */
+fun Pair<String, String>.longer(): String = if (first.length > second.length) first else second
+
+/**
+ * @return A pair containing the shorter of the 2 strings and the longer of the 2 strings.
+ */
+fun Pair<String, String>.shorterAndLonger(): Pair<String, String> = Pair(shorter(), longer())

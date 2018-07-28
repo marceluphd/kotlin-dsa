@@ -10,7 +10,6 @@ val String.isAllCaps: Boolean get() = all { it.isUpperCase() }
 /** True if every character in the String is a lowercase letter. */
 val String.isAllLowercase: Boolean get() = all { it.isLowerCase() }
 
-
 /**
  * Return a String with the elements in the specified range reversed.
  * @throws StringIndexOutOfBoundsException if [indexRange] not in `0..lastIndex`
@@ -32,6 +31,12 @@ fun String.swappingCharsAt(i: Int, j: Int): String =
 fun String.characterFrequencies(caseSensitive: Boolean = true): Map<Char, Int> =
     groupingBy { if (caseSensitive) it.toLowerCase() else it }.eachCount()
 
+/**
+ * Return a map where the entries are (Char -> List of indices containing Char)
+ */
+fun String.characterIndices(): Map<Char, List<Int>> = withIndex()
+    .groupBy(keySelector = { it.value }, valueTransform = { it.index })
+
 
 /**
  * Return a list of the distinct chars in the string (retaining order).
@@ -44,3 +49,4 @@ fun String.distinctChars(): List<Char> = toCharArray().distinct()
  * will be by increasing [ASCII value](https://www.rapidtables.com/code/text/ascii-table.html).
  */
 fun String.toSortedString(): String = toCharArray().sorted().joinToString("")
+

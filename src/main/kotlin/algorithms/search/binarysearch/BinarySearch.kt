@@ -8,7 +8,10 @@ import extensions.lists.isSorted
  */
 
 /**
- * TODO: Test
+ * Returns an [Int?] representing the index (null if the target is not found)
+ *
+ * Time: `O(log n)`
+ * Space: `O(1)`
  */
 fun <T : Comparable<T>> binarySearch(sortedList: List<T>, searchKey: T): Int? {
     var range = 0..sortedList.lastIndex
