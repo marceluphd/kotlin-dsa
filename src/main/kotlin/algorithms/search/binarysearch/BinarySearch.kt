@@ -13,14 +13,14 @@ import extensions.lists.isSorted
  * Time: `O(log n)`
  * Space: `O(1)`
  */
-fun <T : Comparable<T>> List<T>.binarySearch(searchKey: T): Int? {
-    var range = 0..lastIndex
+fun <T : Comparable<T>> List<T>.binarySearch(key: T): Int? {
+    var indexSearchRange = 0..lastIndex
 
-    while (!range.isEmpty()) {
-        val mid = (range.start + range.endInclusive) / 2
-        when {
-            searchKey < this[mid] -> range = (range.start..(mid - 1))
-            searchKey > this[mid] -> range = ((mid + 1)..lastIndex)
+    while (!indexSearchRange.isEmpty()) {
+        val mid = (indexSearchRange.start + indexSearchRange.endInclusive) / 2
+        indexSearchRange = when {
+            key < this[mid] -> (indexSearchRange.start until mid)
+            key > this[mid] -> (mid + 1..lastIndex)
             else -> return mid
         }
     }

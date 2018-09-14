@@ -43,16 +43,15 @@ object SieveOfEratosthenes {
     }
 }
 
-
 /**
  * from http://exercism.io/exercises/kotlin/nth-prime/readme
  */
 fun primeNumberSequence(): Sequence<Int> {
-        return buildSequence {
-            yieldAll(generateSequence(2) { it + 1 }
-                .filter { it.isPrime() })
-        }
+    return buildSequence {
+        yieldAll(generateSequence(2) { it + 1 }
+            .filter { it.isPrime() })
     }
+}
 
 fun nthPrime(n: Int): Int {
     require(n > 0) { "nth undefined for input: $n." }
