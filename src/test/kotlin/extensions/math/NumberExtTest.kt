@@ -1,23 +1,22 @@
 package extensions.math
 
-import org.junit.Assert
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.math.BigInteger
 
 class NumberExtTest {
 
     @Test
     fun isEven() {
-        setOf(-10, -4, 0, 2, 4, 6, 20, 100, 128).forEach { Assert.assertTrue(it.isEven) }
-        setOf(-9, -3, -1, 1, 3, 7, 21, 101, 127).forEach { Assert.assertFalse(it.isEven) }
+        setOf(-10, -4, 0, 2, 4, 6, 20, 100, 128).forEach { assertTrue(it.isEven) }
+        setOf(-9, -3, -1, 1, 3, 7, 21, 101, 127).forEach { assertFalse(it.isEven) }
     }
-
 
     @Test
     fun isOdd() {
-        setOf(-10, -4, 0, 2, 4, 6, 20, 100, 128).forEach { Assert.assertFalse(it.isOdd) }
-        setOf(-9, -3, -1, 1, 3, 7, 21, 101, 127).forEach { Assert.assertTrue(it.isOdd) }
+        setOf(-9, -3, -1, 1, 3, 7, 21, 101, 127).forEach { assertTrue(it.isOdd) }
+        setOf(-10, -4, 0, 2, 4, 6, 20, 100, 128).forEach { assertFalse(it.isOdd) }
     }
 
     @Test
@@ -91,4 +90,20 @@ class NumberExtTest {
         assertEquals(-0.12, (-0.1234).roundedToNDecimalPlaces(2), 0.00001)
     }
 
+    @Test
+    fun medianTest() {
+        assertEquals(2, median(1, 2, 3))
+        assertEquals(-2, median(-1, -2, -3))
+        assertEquals(3, median(1, 3, 3))
+        assertEquals(3, median(3, 3, 3))
+    }
+
+    @Test
+    fun testMinOf() {
+        assertEquals(1, minOf(1, 2, 3, 4))
+        assertEquals(1L, minOf(1L, 2L, 3L, 4L))
+        assertEquals(1f, minOf(1f, 2f, 3f, 4f))
+        assertEquals(1.0, minOf(1.0, 2.0, 3.0, 4.0), 0.00001)
+        assertEquals(1.0001, minOf(1.0001, 1.0002, 3.0, 4.0), 0.00001)
+    }
 }

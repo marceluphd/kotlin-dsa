@@ -8,60 +8,87 @@ class ArraysExtTest {
     private val arrayWithNulls = arrayOf("foo", null, "bar")
     private val arrayAllNulls: Array<String?> = arrayOf(null, null, null)
     private val arrayNoNulls: Array<String?> = arrayOf("foo", "bar", "baz")
+    private val emptyStringArray: Array<String?> = arrayOf()
 
     private val intArray = intArrayOf(1, 2, 3)
     private val emptyIntArray = intArrayOf()
+
+    private val doubleArray = doubleArrayOf(1.0, 2.0, 3.0)
+    private val emptyDoubleArray = doubleArrayOf()
+
     private val charArray = charArrayOf('1', '2', '3')
     private val emptyCharArray = charArrayOf()
 
-    private val matrix3x4: Matrix = Array(3, { i ->
-        IntArray(4, { j -> (i * 4) + j })
-    })
+    private val boolArray = booleanArrayOf(true, false, false, true)
+    private val emptyBoolArray = booleanArrayOf()
 
-    private val matrix1x3: Matrix = Array(1, { IntArray(3, { i -> i + 1 }) })
-
-    private val list3x4: List<List<Int>> = listOf(listOf(0, 1, 2, 3), listOf(4, 5, 6, 7), listOf(8, 9, 10, 11))
-    private val list1x3: List<List<Int>> = listOf(listOf(1, 2, 3))
 
     @Test
-    fun isBlank() {
-        // Array
-        assertTrue(nullRefArray.isBlank())
-        assertTrue(arrayOf<Int>().isBlank())
-        assertFalse(arrayOf("foo").isBlank())
+    fun head() {
+        assertEquals("foo", arrayWithNulls.head)
+        assertNull(arrayOf<String>().head)
 
-        // IntArray
-        val nullIntArray: IntArray? = null
-        assertTrue(nullIntArray.isBlank())
+        assertEquals(1, intArrayOf(1, 2, 3, 4).head)
+        assertEquals(1, intArrayOf(1).head)
+        assertNull(emptyIntArray.head)
+
+        assertEquals(true, boolArray.head)
+        assertNull(emptyBoolArray.head)
+
+        assertEquals('1', charArray.head)
+        assertNull(emptyCharArray.head)
     }
 
     @Test
-    fun anyNull() {
-        assertTrue(arrayWithNulls.anyNull())
-        assertTrue(arrayAllNulls.anyNull())
-        assertFalse(arrayNoNulls.anyNull())
+    fun tail() {
+        assertArrayEquals(arrayOf(null, "bar"), arrayWithNulls.tail)
+        assertArrayEquals(arrayOf("bar", "baz"), arrayNoNulls.tail)
+        assertArrayEquals(emptyStringArray, arrayOf("foo").tail)
+        assertArrayEquals(emptyStringArray, emptyStringArray.tail)
+
+        assertArrayEquals(intArrayOf(2, 3), intArray.tail)
+        assertArrayEquals(emptyIntArray, intArrayOf(1).tail)
+        assertArrayEquals(emptyIntArray, emptyIntArray.tail)
+
+        assertArrayEquals(booleanArrayOf(false, false, true), boolArray.tail)
+        assertArrayEquals(emptyBoolArray, booleanArrayOf(false).tail)
+        assertArrayEquals(emptyBoolArray, emptyBoolArray.tail)
     }
 
     @Test
-    fun allNull() {
-        assertFalse(arrayWithNulls.allNull())
-        assertTrue(arrayAllNulls.allNull())
-        assertFalse(arrayNoNulls.allNull())
-    }
+    fun headAndTail() {
+        val (h1, t1) = arrayWithNulls.headAndTail
+        assertEquals("foo", h1)
+        assertArrayEquals(arrayOf(null, "bar"), t1)
 
-    @Test
-    fun isArrayType() {
-        assertFalse("foo".isArrayType())
-        assertFalse(7.isArrayType())
+        val (h2, t2) = arrayWithNulls.headAndTail
+        assertEquals("foo", h2)
+        assertArrayEquals(arrayOf(null, "bar"), t2)
 
-        assertTrue(arrayAllNulls.isArrayType())
-        assertTrue(arrayWithNulls.isArrayType())
-        assertTrue(arrayNoNulls.isArrayType())
+        val (h3, t3) = emptyStringArray.headAndTail
+        assertNull(h3)
+        assertArrayEquals(emptyStringArray, t3)
 
-        assertTrue(emptyIntArray.isArrayType())
-        assertTrue(intArray.isArrayType())
-        assertTrue(charArray.isArrayType())
-        assertTrue(emptyCharArray.isArrayType())
+
+        val (hi1, ti1) = intArray.headAndTail
+        assertEquals(1, hi1)
+        assertArrayEquals(intArrayOf(2, 3), ti1)
+
+        val (hb1, tb1) = boolArray.headAndTail
+        assertEquals(true, hb1)
+        assertArrayEquals(booleanArrayOf(false, false, true), tb1)
+
+        val (hc1, tc1) = charArray.headAndTail
+        assertEquals('1', hc1)
+        assertArrayEquals(charArrayOf('2', '3'), tc1)
+
+        val (hd2, td2) = emptyDoubleArray.headAndTail
+        assertNull(hd2)
+        assertArrayEquals(doubleArrayOf(), td2, 0.00001)
+
+        val (hd1, td1) = doubleArray.headAndTail
+        assertEquals(1.0, hd1)
+        assertArrayEquals(doubleArrayOf(2.0, 3.0), td1, 0.00001)
     }
 
     @Test
@@ -131,25 +158,15 @@ class ArraysExtTest {
         strArr.reverseElementsInRange(2..4)
     }
 
-    @Test
-    fun headAndTailArrays() {
-        assertArrayEquals(intArrayOf(1), intArrayOf(1, 2, 3, 4).headAndTailArrays().first)
-        assertArrayEquals(intArrayOf(2, 3, 4), intArrayOf(1, 2, 3, 4).headAndTailArrays().second)
-        assertArrayEquals(intArrayOf(1), intArrayOf(1).headAndTailArrays().first)
-        assertArrayEquals(intArrayOf(), intArrayOf(1).headAndTailArrays().second)
-        assertArrayEquals(intArrayOf(), intArrayOf().headAndTailArrays().first)
-        assertArrayEquals(intArrayOf(), intArrayOf().headAndTailArrays().second)
-    }
-
-    @Test
-    fun headAndTail() {
-        assertEquals(1, intArrayOf(1, 2, 3, 4).headAndTail().first)
-        assertArrayEquals(intArrayOf(2, 3, 4), intArrayOf(1, 2, 3, 4).headAndTail().second)
-        assertEquals(1, intArrayOf(1).headAndTail().first)
-        assertArrayEquals(intArrayOf(), intArrayOf(1).headAndTail().second)
-        assertNull(intArrayOf().headAndTail().first)
-        assertArrayEquals(intArrayOf(), intArrayOf().headAndTail().second)
-    }
+//    @Test
+//    fun headAndTailArrays() {
+//        assertArrayEquals(intArrayOf(1), intArrayOf(1, 2, 3, 4).headAndTailArrays().first)
+//        assertArrayEquals(intArrayOf(2, 3, 4), intArrayOf(1, 2, 3, 4).headAndTailArrays().second)
+//        assertArrayEquals(intArrayOf(1), intArrayOf(1).headAndTailArrays().first)
+//        assertArrayEquals(intArrayOf(), intArrayOf(1).headAndTailArrays().second)
+//        assertArrayEquals(intArrayOf(), intArrayOf().headAndTailArrays().first)
+//        assertArrayEquals(intArrayOf(), intArrayOf().headAndTailArrays().second)
+//    }
 
     @Test
     fun isSorted() {
@@ -237,41 +254,4 @@ class ArraysExtTest {
         )
     }
 
-    /* Matrix */
-    @Test
-    fun matrixProperties() {
-        assertEquals(3, matrix3x4.rows)
-        assertEquals(4, matrix3x4.columns)
-        assertEquals(2, matrix3x4.lastRow)
-        assertEquals(3, matrix3x4.lastColumn)
-        assertEquals((0 until 3), matrix3x4.rowRange)
-        assertEquals((0 until 4), matrix3x4.columnRange)
-        assertEquals(1, matrix1x3.rows)
-        assertEquals(3, matrix1x3.columns)
-        assertEquals(0, matrix1x3.lastRow)
-        assertEquals(2, matrix1x3.lastColumn)
-        assertEquals((0 until 1), matrix1x3.rowRange)
-        assertEquals((0 until 3), matrix1x3.columnRange)
-    }
-
-    @Test
-    fun toList() {
-        assertEquals(list3x4, matrix3x4.toList())
-        assertEquals(list1x3, matrix1x3.toList())
-    }
-
-    @Test
-    fun toMatrix() {
-        assertArrayEquals(list1x3.toMatrix(), matrix1x3)
-        assertArrayEquals(list3x4.toMatrix(), matrix3x4)
-    }
-
-    @Test
-    fun transpose() {
-        assertEquals(listOf(listOf(1), listOf(2), listOf(3)), matrix1x3.transpose().toList())
-        assertEquals(
-            listOf(listOf(0, 4, 8), listOf(1, 5, 9), listOf(2, 6, 10), listOf(3, 7, 11)),
-            matrix3x4.transpose().toList()
-        )
-    }
 }

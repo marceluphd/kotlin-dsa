@@ -3,6 +3,8 @@ package extensions.math
 import java.text.DecimalFormat
 import kotlin.math.absoluteValue
 import kotlin.math.log10
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 /**
@@ -15,6 +17,11 @@ import kotlin.math.pow
 
 val Int.isEven: Boolean get() = this % 2 == 0
 val Int.isOdd: Boolean get() = this % 2 != 0
+
+fun minOf(vararg numbers: Int): Int {
+    require(numbers.isNotEmpty()) { "Cannot take min of 0 numbers" }
+    return numbers.min()!!
+}
 
 /**
  * Applies Java's [Character.forDigit].
@@ -62,19 +69,48 @@ fun Int.leastSignificantDigit(): Int = this % 10
 fun Int.mostSignificantDigit(): Int = this / 10.0.pow(numberOfDigits() - 1).toInt()
 
 // note: 03 will be returned as 3
-internal fun Int.nLeastSignificantDigits(n: Int): Int {
+fun Int.nLeastSignificantDigits(n: Int): Int {
     require(n >= 1) { "invalid argument n: $n. Must be >= 1" }
     return this % 10.0.pow(n).toInt()
 }
 
-internal fun Int.nMostSignificantDigits(n: Int): Int {
+fun Int.nMostSignificantDigits(n: Int): Int {
     val totalDigits = numberOfDigits()
     require(n in 1..totalDigits) { "invalid argument n: $n. Must be in range [0, total number of digits]" }
     return this / 10.0.pow(totalDigits - n).toInt()
+}
+
+fun median(a: Int, b: Int, c: Int) = max(min(a, b), min(max(a, b), c))
+
+/********************
+ * Long
+ ********************/
+fun minOf(vararg numbers: Long): Long {
+    require(numbers.isNotEmpty()) { "Cannot take min of 0 numbers" }
+    return numbers.min()!!
+}
+
+
+/********************
+ * Double
+ ********************/
+
+fun minOf(vararg numbers: Double): Double {
+    require(numbers.isNotEmpty()) { "Cannot take min of 0 numbers" }
+    return numbers.min()!!
 }
 
 fun Double.roundedToNDecimalPlaces(n: Int): Double {
     require(n >= 0) { "Invalid # of decimal places: $n" }
     val formatter = DecimalFormat("#.${"#".repeat(n)}")
     return formatter.format(this).toDouble()
+}
+
+/********************
+ * Float
+ ********************/
+
+fun minOf(vararg numbers: Float): Float {
+    require(numbers.isNotEmpty()) { "Cannot take min of 0 numbers" }
+    return numbers.min()!!
 }

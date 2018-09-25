@@ -16,38 +16,26 @@ class ListExtTest {
     private val nestedList1x3 = listOf(listOf(1, 2, 3))
 
     @Test
+    fun dropFirst() {
+        assertEquals(listOf(2, 3, 4), listOf(1, 2, 3, 4).dropFirst())
+        assertEquals(emptyList<Int>(), emptyList<Int>().dropFirst())
+        assertEquals(emptyList<Int>(), listOf(1).dropFirst())
+    }
+
+    @Test
+    fun dropLast() {
+        assertEquals(listOf(1, 2, 3), listOf(1, 2, 3, 4).dropLast())
+        assertEquals(emptyList<Int>(), emptyList<Int>().dropLast())
+        assertEquals(emptyList<Int>(), listOf(1).dropLast())
+    }
+
+    @Test
     fun halves() {
         assertEquals(Pair(emptyList<Int>(), emptyList<Int>()), emptyList<Int>().halves)
         assertEquals(Pair(listOf(1), emptyList<Int>()), listOf(1).halves)
         assertEquals(Pair(listOf(1), listOf(2)), listOf(1, 2).halves)
         assertEquals(Pair(listOf(1, 2), listOf(3)), listOf(1, 2, 3).halves)
         assertEquals(Pair(listOf(1, 2), listOf(3, 4)), listOf(1, 2, 3, 4).halves)
-    }
-
-    @Test
-    fun frequencyMap() {
-        assertEquals(
-            mapOf("foo" to 2, "bar" to 1, "baz" to 1),
-            listOf("foo", "bar", "foo", "baz").frequencyMap()
-        )
-
-        assertEquals(
-            mapOf(1 to 2, 7 to 1),
-            listOf(1, 7, 1).frequencyMap()
-        )
-    }
-
-    @Test
-    fun valueToIndicesMap() {
-        assertEquals(
-            mapOf("foo" to listOf(0, 2), "bar" to listOf(1), "baz" to listOf(3)),
-            listOf("foo", "bar", "foo", "baz").valueToIndicesMap()
-        )
-
-        assertEquals(
-            mapOf(1 to listOf(0, 2), 7 to listOf(1)),
-            listOf(1, 7, 1).valueToIndicesMap()
-        )
     }
 
     @Test
@@ -80,20 +68,6 @@ class ListExtTest {
     @Test(expected = IllegalArgumentException::class)
     fun `toTriple throws if size greater than 3`() {
         listOf(1, 2, 3, 4).toTriple()
-    }
-
-    @Test
-    fun headAndTail() {
-        assertEquals(Pair(1, listOf(2, 3, 4)), listOf(1, 2, 3, 4).headAndTail())
-        assertEquals(Pair(1, emptyList<Int>()), listOf(1).headAndTail())
-        assertEquals(Pair(null, emptyList<Int>()), emptyList<Int>().headAndTail())
-    }
-
-    @Test
-    fun headAndTailLists() {
-        assertEquals(Pair(listOf(1), listOf(2, 3, 4)), listOf(1, 2, 3, 4).headAndTailLists())
-        assertEquals(Pair(listOf(1), emptyList<Int>()), listOf(1).headAndTailLists())
-        assertEquals(Pair(emptyList<Int>(), emptyList<Int>()), emptyList<Int>().headAndTailLists())
     }
 
     @Test

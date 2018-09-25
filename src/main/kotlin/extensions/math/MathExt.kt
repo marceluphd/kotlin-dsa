@@ -1,5 +1,6 @@
 package extensions.math
 
+import extensions.arrays.headAndTail
 import java.math.BigInteger
 import kotlin.math.sqrt
 
@@ -8,7 +9,16 @@ import kotlin.math.sqrt
  * Permutation/Combinations taken from: https://github.com/MarcinMoskala/KotlinDiscreteMathToolkit
  */
 
+fun log2(x: Double): Double = Math.log10(x) / Math.log10(2.0)
+fun log3(x: Double): Double = Math.log10(x) / Math.log10(3.0)
 
+const val EPSILON = 1e-10
+
+/**
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(1)`
+ */
 fun Int.isPrime(): Boolean {
     if (this <= 1)
         return false
@@ -17,7 +27,10 @@ fun Int.isPrime(): Boolean {
     return (2..sqrt).all { this % it != 0 }
 }
 
-/** https://brilliant.org/wiki/sum-of-n-n2-or-n3 */
+/**
+ * Returns the sum of the first n positive integers:
+ * Sum of `1..n`: `1 + 2 + 3 + ... + n-1 + n`
+ */
 fun sumOfFirstNPositiveIntegers(n: Int) = ((n * (n + 1)) / 2)
 
 /**
@@ -66,23 +79,36 @@ fun <T> Set<T>.combinations(k: Int): Set<Set<T>> = when {
     k == 0 -> setOf(setOf())
     k >= size -> setOf(toSet())
     else -> powerSet()
+        .asSequence()
         .filter { it.size == k }
         .toSet()
 }
 
-/** http://tinyurl.com/yd526qh2 */
-fun <T> Collection<T>.powerSet(): Set<Set<T>> = powerSet(this, setOf(setOf()))
-
-private tailrec fun <T> powerSet(left: Collection<T>, acc: Set<Set<T>>): Set<Set<T>> =
-    if (left.isEmpty()) acc
-    else powerSet(left.drop(1), acc + acc.map { it + left.first() })
-
+/**
+ * Generates the Power Set of the [Collection].
+ *
+ * **Time**: `O(2^n)`
+ *
+ * **Space**: `O(n)`
+ */
+fun <T> Collection<T>.powerSet(): Set<Set<T>> {
+    val powerSet: MutableSet<Set<T>> = hashSetOf(emptySet()) // contains only the null set {{}}
+    for (x in this)
+        powerSet += powerSet.map { it + x }
+    return powerSet
+}
 
 /**
  * Generates all permutations (including non-distinct, by default)
  */
 fun <T> List<T>.permutations(distinct: Boolean = false): Set<List<T>> =
-    if (distinct) permutations().distinct().toSet() else permutations()
+    when {
+        distinct -> permutations()
+            .asSequence()
+            .distinct()
+            .toSet()
+        else -> permutations()
+    }
 
 
 private fun <T> List<T>.permutations(): Set<List<T>> = when (size) {
@@ -104,5 +130,19 @@ private fun <T> List<T>.plusAtIndex(index: Int, element: T): List<T> {
         0 -> listOf(element) + this
         size -> this + element
         else -> dropLast(size - index) + element + drop(index)
+    }
+}
+
+// Returns List<List<Int>> due to signature of LeetCode Problems 46-47
+fun IntArray.permutations(): List<List<Int>> = when (size) {
+    0 -> listOf()
+    1 -> listOf(listOf(this[0]))
+    else -> {
+        val (head, tail) = headAndTail
+        tail.permutations().flatMap { sublist ->
+            (0..sublist.size).map { i ->
+                sublist.plusAtIndex(index = i, element = head!!)
+            }
+        }.distinct()
     }
 }

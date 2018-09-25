@@ -1,13 +1,12 @@
 package datastructures.tree
 
-import datastructures.queue.ListQueue
-import datastructures.queue.Queue
 import datastructures.tree.DFSTraversalOrder.INORDER
 import datastructures.tree.DFSTraversalOrder.POSTORDER
 import datastructures.tree.DFSTraversalOrder.PREORDER
+import java.util.*
 
 /**
- * Definition for a binary tree node.
+ * Definition for a extensions.binary tree node.
  */
 class TreeNode(var `val`: Int = 0, var left: TreeNode? = null, var right: TreeNode? = null) {
 
@@ -36,23 +35,26 @@ class TreeNode(var `val`: Int = 0, var left: TreeNode? = null, var right: TreeNo
 
 val TreeNode.hasLeft: Boolean get() = left != null
 val TreeNode.hasRight: Boolean get() = right != null
-val TreeNode.hasTwoChildren: Boolean get() = left != null && right != null
 val TreeNode.isLeaf: Boolean get() = left == null && right == null
-
-val TreeNode.size: Int get() = 1 + (left?.size ?: 0) + (right?.size ?: 0)
+val TreeNode.hasSingleChild: Boolean get() = (hasLeft || hasRight) && !(hasLeft && hasRight)
+val TreeNode.hasTwoChildren: Boolean get() = left != null && right != null
 
 /**
- * Can't implement component1/component2, since the types can't be nullable.
- * But this can be used for destructuring (among other uses):
- * ```
- * val (l, r) = tree?.children
- * ```
+ * Returns the number of nodes in the tree.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)` (recursive stack space)
  */
-val TreeNode.children: Pair<TreeNode?, TreeNode?>
-    get() = Pair(left, right)
+val TreeNode.size: Int
+    get() = 1 + (left?.size ?: 0) + (right?.size ?: 0)
 
 /**
  * Height: the number of edges on the longest path between this node and a leaf.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
  */
 val TreeNode.height: Int
     get() {
@@ -61,11 +63,25 @@ val TreeNode.height: Int
     }
 
 /**
- * Search for a value in the binary tree, returning the node
+ * Returns the left and right children of this node as a [Pair] of nullable TreeNodes.
+ * ```
+ * val (l, r) = tree?.children
+ * ```
+ *
+ * **Time**: `O(1)`
+ *
+ * **Space**: `O(1)`
+ */
+val TreeNode.children: Pair<TreeNode?, TreeNode?>
+    get() = Pair(left, right)
+
+/**
+ * Search for a value in the extensions.binary tree, returning the node
  * containing the value if it is found, or else null.
  *
- * Time: O(n)
- * Space: O(n)
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
  */
 fun TreeNode?.find(searchValue: Int): TreeNode? {
     this ?: return null
@@ -77,36 +93,63 @@ fun TreeNode?.find(searchValue: Int): TreeNode? {
     }
 }
 
-fun TreeNode.contains(value: Int): Boolean = find(value) != null
+/**
+ * Checks whether the specified value is contained in the tree.
+ *
+ * Usage:
+ * ```
+ * val tree: TreeNode = TreeNode(1)
+ * tree.left = TreeNode(2)
+ * tree.right = TreeNode(3)
+ * 2 in tree
+ * ```
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
+ */
+operator fun TreeNode.contains(value: Int): Boolean = find(value) != null
 
 enum class DFSTraversalOrder { PREORDER, INORDER, POSTORDER; }
 
 /**
  * Perform depth-first traversal on the tree, executing [visit] on each node.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
  */
 fun TreeNode?.dfs(order: DFSTraversalOrder = INORDER, visit: (TreeNode) -> Unit) {
     this ?: return
 
-    if (order == PREORDER)
-        visit(this)
+    when (order) {
+        PREORDER -> {
+            visit(this)
+            left?.dfs(PREORDER, visit)
+            right?.dfs(PREORDER, visit)
+        }
 
-    left?.dfs(order, visit)
+        INORDER -> {
+            left?.dfs(INORDER, visit)
+            visit(this)
+            right?.dfs(INORDER, visit)
+        }
 
-    if (order == INORDER)
-        visit(this)
-
-    right?.dfs(order, visit)
-
-    if (order == POSTORDER)
-        visit(this)
+        POSTORDER -> {
+            left?.dfs(POSTORDER, visit)
+            right?.dfs(POSTORDER, visit)
+            visit(this)
+        }
+    }
 }
 
 /**
  * Traverse the tree (using inorder depth-first search), collecting the values
- * into a [Collection<Int>].
+ * into a [Collection].
  *
- * Time: `O(n)`
- * Space: `O(n)`
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
  */
 fun TreeNode?.collect(acc: MutableList<Int> = arrayListOf()): List<Int> =
     this?.let {
@@ -120,8 +163,9 @@ fun TreeNode?.collect(acc: MutableList<Int> = arrayListOf()): List<Int> =
  * applies the [transform] to each [TreeNode], and
  * collect the transform result.
  *
- * Time: `O(n)` - assuming `transform` is `<= O(n)`
- * Space: `O(n)`
+ * **Time**: `O(n)` - assuming `transform` is `<= O(n)`
+ *
+ * **Space**: `O(n)`
  */
 fun <T> TreeNode?.collect(
     traversalOrder: DFSTraversalOrder = INORDER,
@@ -129,13 +173,16 @@ fun <T> TreeNode?.collect(
     transform: (TreeNode) -> T
 ): List<T> {
     this ?: return emptyList()
-
     dfs(order = traversalOrder) { acc += transform(it) }
     return acc
 }
 
 /**
  * Collect the unique values to a Set.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
  */
 fun TreeNode?.collectUnique(acc: MutableSet<Int> = hashSetOf()): Set<Int> =
     this?.let {
@@ -145,85 +192,96 @@ fun TreeNode?.collectUnique(acc: MutableSet<Int> = hashSetOf()): Set<Int> =
     } ?: acc
 
 /**
- * Return a list of the values in the tree. For binary search trees, the values
- * will be sorted.
- *
- */
-fun TreeNode?.toList(): List<Int> = collect { it.`val` }.toList()
-
-/**
  * Execute a breadth-first traversal of the tree.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
  */
 fun TreeNode?.bfs(visit: (TreeNode) -> Unit) {
     this ?: return
 
-    val queue = ListQueue<TreeNode>()
+    val queue: Queue<TreeNode> = ArrayDeque<TreeNode>()
     var node: TreeNode = this
-    queue.enqueue(node)
+    queue.add(node)
     while (queue.isNotEmpty()) {
-        node = queue.dequeue() ?: return
+        node = queue.remove() ?: return
         visit(node)
-        node.left?.let { queue.enqueue(it) }
-        node.right?.let { queue.enqueue(it) }
+        node.left?.let { queue.add(it) }
+        node.right?.let { queue.add(it) }
     }
 }
 
 /**
+ * TODO - test
  * Execute a depth-aware breadth-first traversal of the tree.
  *
  * Example usage:
  *
+ * ```
  * var treeLevels = hashMapOf<Int, List<Int>>()     // nodes values by depth (Map of Depth => Values)
  * binarySearchTree.depthAwareBFS() { (node, depth) ->
  *     treeLevels[depth] = (treeLevels[depth] ?: emptyList()) + node.`val`
  * }
  * println(treeLevels)
+ * ```
  */
 fun TreeNode?.depthAwareBFS(visit: (Pair<TreeNode, Int>) -> Unit) {
     this ?: return
 
-    val queue = ListQueue<Pair<TreeNode, Int>>()
-    queue.enqueue(Pair(this, 0))
+    val queue: Queue<Pair<TreeNode, Int>> = ArrayDeque<Pair<TreeNode, Int>>()
+    queue.add(Pair(this, 0))
 
     while (queue.isNotEmpty()) {
-        val (node, depth) = queue.dequeue()!!
+        val (node, depth) = queue.remove()!!
         visit(node to depth)
         node.left?.let {
-            queue.enqueue(Pair(it, depth + 1))
+            queue.add(Pair(it, depth + 1))
         }
         node.right?.let {
-            queue.enqueue(Pair(it, depth + 1))
+            queue.add(Pair(it, depth + 1))
         }
     }
 }
 
 /**
  * Get the values in the tree by depth.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
  */
 fun TreeNode?.levels(): List<List<Int>> {
     this ?: return emptyList()
 
-    val queue = ListQueue<Pair<TreeNode, Int>>()
-    queue.enqueue(this to 0)
+    val queue: Queue<Pair<TreeNode, Int>> = ArrayDeque<Pair<TreeNode, Int>>()
+    queue.add(this to 0)
 
     val levels = arrayListOf<MutableList<Int>>()
 
     while (queue.isNotEmpty()) {
-        val (node, depth) = queue.dequeue()!!
+        val (node, depth) = queue.poll()
 
         if (depth > levels.lastIndex) {
-            levels.add(arrayListOf(node.`val`))
-        } else {
-            levels[depth].add(node.`val`)
+            levels.add(arrayListOf())
         }
 
-        node.left?.let { queue.enqueue(it to depth + 1) }
-        node.right?.let { queue.enqueue(it to depth + 1) }
+        levels[depth].add(node.`val`)
+
+        node.left?.let { queue.add(it to depth + 1) }
+        node.right?.let { queue.add(it to depth + 1) }
     }
 
     return levels
 }
 
+/**
+ * Validates that the tree has the properties of a Binary Search Tree.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
+ */
 fun TreeNode?.isBST(validRange: IntRange = (Int.MIN_VALUE..Int.MAX_VALUE)): Boolean {
     this ?: return true
 
@@ -235,6 +293,10 @@ fun TreeNode?.isBST(validRange: IntRange = (Int.MIN_VALUE..Int.MAX_VALUE)): Bool
 
 /**
  * Returns a list of all root-to-leaf paths.
+ *
+ * **Time**:
+ *
+ * **Space**:
  */
 fun TreeNode?.rootToLeafPaths(
     currentPath: List<Int> = emptyList(),
@@ -258,7 +320,7 @@ fun TreeNode?.allPaths(
     paths: MutableList<List<Int>> = mutableListOf()
 ): List<List<Int>> =
     this?.let {
-        val pathsToRoot = listOf(listOf(`val`)) + pathsToParent.map { it + `val` }
+        val pathsToRoot = listOf(listOf(`val`)) + pathsToParent.map { path -> path + `val` }
         paths += pathsToRoot
 
         left?.allPaths(pathsToParent = pathsToRoot, paths = paths)
@@ -268,30 +330,29 @@ fun TreeNode?.allPaths(
     } ?: paths
 
 /**
- * Create a binary tree from the given elements.
+ * Create a extensions.binary tree from the given elements.
  * Insertion order is the same as LeetCode's 'Tree Visualizer'
  * @param elements The values to add to the tree.
- * @return The root of a binary tree containing the [elements], or `null` if
- *         elements is empty.
+ * @return The root of a extensions.binary tree containing the [elements]
+ * @throws IllegalArgumentException If [elements] is empty
  */
 fun buildTree(vararg elements: Int?): TreeNode? {
-    if (elements.isEmpty())
-        return null
+    require(elements.isNotEmpty()) { "Cannot build empty tree" }
 
     require(elements[0] != null) { "Root cannot be null" }
 
     val root = TreeNode(elements.first()!!)
     var parent = root
-    val parentQueue: Queue<TreeNode> = ListQueue()
-    parentQueue.enqueue(parent)
+    val parentQueue: Queue<TreeNode> = ArrayDeque<TreeNode>()
+    parentQueue.add(parent)
     var i = 1
     while (i < elements.size) {
-        parent = parentQueue.dequeue() ?: return root
+        parent = parentQueue.remove() ?: return root
 
         parent.left = if (elements[i] != null) TreeNode(elements[i]!!) else null
         i++
         parent.left?.let {
-            parentQueue.enqueue(it)
+            parentQueue.add(it)
         }
 
         if (i > elements.lastIndex)
@@ -300,7 +361,7 @@ fun buildTree(vararg elements: Int?): TreeNode? {
         parent.right = if (elements[i] != null) TreeNode(elements[i]!!) else null
         i++
         parent.right?.let {
-            parentQueue.enqueue(it)
+            parentQueue.add(it)
         }
     }
 
@@ -308,46 +369,27 @@ fun buildTree(vararg elements: Int?): TreeNode? {
 }
 
 /**
- * Build tree from LeetCode's array representation:
- * buildTreeFromString("[1, 2, 3]") -> buildTree(1, 2, 3)
- */
-fun buildTreeFromString(input: String): TreeNode? {
-    require(input.first() == '[' && input.last() == ']') {
-        "Invalid format: $input"
-    }
-
-    val withoutBraces = input.drop(1).dropLast(1)
-    val elements = withoutBraces.split(',')
-        .map { it.trim() }
-        .map { c ->
-            when {
-                c[0] == '-' -> {
-                    if (!c.drop(1).all { it.isDigit() }) {
-                        throw IllegalArgumentException("Expected digits after negative sign")
-                    } else {
-                        c.toInt()
-                    }
-                }
-                c.all { it.isDigit() } -> c.toInt()
-                c == "null" -> null
-                else -> throw IllegalArgumentException("Unable to parse input")
-            }
-        }
-    return buildTree(*elements.toTypedArray())
-}
-
-/**
- * Create a binary search tree from the given elements.
+ * Create a extensions.binary search tree from the given elements.
  * Insertion order is the same as LeetCode's 'Tree Visualizer'.
  * For the BST property to be satisfied, all left subtree values must be less than the root,
  * and all right subtree values must be greater. Duplicates are not permitted.
  * @param elements The values to add to the tree.
  * @return The root of a BST containing the [elements], or `null` if
  *         elements is empty.
- * @throws IllegalArgumentException if the elements cannot create a valid binary search tree.
+ * @throws IllegalArgumentException if the elements cannot create a valid extensions.binary search tree.
  */
 fun buildBST(vararg elements: Int?): TreeNode? {
     val tree = buildTree(*elements)
     require(tree.isBST()) { "The elements in the order provided violate the BST property." }
     return tree
 }
+
+/**
+ * Return a list of the values in the tree. For extensions.binary search trees, the values
+ * will be sorted.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
+ */
+fun TreeNode?.toList(): List<Int> = collect { it.`val` }.toList()

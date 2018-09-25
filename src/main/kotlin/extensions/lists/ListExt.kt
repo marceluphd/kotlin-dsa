@@ -1,9 +1,26 @@
 package extensions.lists
 
-
 /**
  * List extensions
  */
+
+/**
+ * Returns a list containing all elements except the first element.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
+ */
+fun <E> List<E>.dropFirst(): List<E> = drop(1)
+
+/**
+ * Returns a list containing all elements except the last element.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
+ */
+fun <E> List<E>.dropLast(): List<E> = dropLast(1)
 
 /**
  * Returns views of the first and second halves of the list.
@@ -15,17 +32,6 @@ val <T> List<T>.halves: Pair<List<T>, List<T>>
         else -> slice(0..lastIndex / 2) to slice((lastIndex / 2) + 1..lastIndex)
     }
 
-/**
- * Return a map where the entries are (element -> # of occurrences)
- */
-fun <T> List<T>.frequencyMap(): Map<T, Int> = groupingBy { it }.eachCount()
-
-/**
- * Return a map where the entries are (element -> List of indices containing element)
- */
-fun <T> List<T>.valueToIndicesMap(): Map<T, List<Int>> = withIndex()
-    .groupBy(keySelector = { it.value }, valueTransform = { it.index })
-
 /* Tuples */
 fun <T> List<T>.toPair(): Pair<T, T> {
     require(size == 2) { "List must have size 2 to convert to Pair" }
@@ -36,9 +42,6 @@ fun <T> List<T>.toTriple(): Triple<T, T, T> {
     require(size == 3) { "List must have size 3 to convert to Triple" }
     return Triple(this[0], this[1], this[2])
 }
-
-fun <T> List<T>.headAndTail(): Pair<T?, List<T>> = firstOrNull() to drop(1)
-fun <T> List<T>.headAndTailLists(): Pair<List<T>, List<T>> = take(1) to drop(1)
 
 fun <T : Comparable<T>> List<T>.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
 fun <T : Comparable<T>> List<T>.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }

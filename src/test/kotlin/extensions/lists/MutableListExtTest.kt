@@ -101,4 +101,5 @@ class MutableListExtTest {
         strings.swap(1, 3)
         assertEquals(mutableListOf("foo", "baz", "foo", "bar"), strings)
     }
+
 }

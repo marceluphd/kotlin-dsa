@@ -1,7 +1,5 @@
 package extensions.tuples
 
-import kotlin.math.abs
-
 /**
  * [Pair] extensions
  */
@@ -15,12 +13,6 @@ fun Pair<Float, Float>.toFloatArray(): FloatArray = floatArrayOf(first, second)
 fun Pair<Int, Int>.toIntArray(): IntArray = intArrayOf(first, second)
 fun Pair<Long, Long>.toLongArray(): LongArray = longArrayOf(first, second)
 fun Pair<Short, Short>.toShortArray(): ShortArray = shortArrayOf(first, second)
-
-/* Math */
-fun Pair<Int, Int>.sum(): Int = first + second
-
-fun Pair<Int, Int>.product(): Int = first * second
-fun Pair<Int, Int>.absDifference(): Int = abs(first - second)
 
 fun <T : Comparable<T>> Pair<T, T>.max() = maxOf(first, second)
 fun <T : Comparable<T>> Pair<T, T>.min() = minOf(first, second)

@@ -1,37 +1,45 @@
 package extensions.arrays
 
-/**
- * Extensions for Array<T> & the primitive array types (BooleanArray, DoubleArray, etc.)
- */
-
-/* https://github.com/Carleslc/kotlin-extensions/blob/master/src/me/carleslc/kotlin/extensions/arrays/ArrayExtensions.kt */
-fun <T> Array<T>?.isBlank(): Boolean = this == null || isEmpty()
-
-fun <T> Array<T?>.anyNull(): Boolean = any { it == null }
-fun <T> Array<T?>.allNull(): Boolean = all { it == null }
-
-fun IntArray?.isBlank(): Boolean = this == null || isEmpty()
+import extensions.ranges.mid
 
 /**
- * Return true if the object is either an Array<T> or primitive array type.
+ * Extensions for [Array] & the primitive array types ([IntArray], [BooleanArray], etc.)
  */
-fun Any.isArrayType(): Boolean {
-    if (this is Array<*>)
-        return true
 
-    val primitiveArrayTypes = setOf(
-        BooleanArray::class,
-        ByteArray::class,
-        CharArray::class,
-        DoubleArray::class,
-        FloatArray::class,
-        IntArray::class,
-        LongArray::class,
-        ShortArray::class
-    )
+const val NOT_FOUND: Int = -1
 
-    return this::class in primitiveArrayTypes
-}
+/**
+ * Get the middle index.
+ */
+val <T> Array<T>.midIndex: Int get() = indices.mid
+val IntArray.midIndex: Int get() = indices.mid
+val LongArray.midIndex: Int get() = indices.mid
+val CharArray.midIndex: Int get() = indices.mid
+val BooleanArray.midIndex: Int get() = indices.mid
+val FloatArray.midIndex: Int get() = indices.mid
+val DoubleArray.midIndex: Int get() = indices.mid
+val ByteArray.midIndex: Int get() = indices.mid
+val ShortArray.midIndex: Int get() = indices.mid
+
+val <T> Array<T>.head: T? get() = firstOrNull()
+val <T> Array<T>.tail: Array<T> get() = sliceArray(1 until size)
+val <T> Array<T>.headAndTail: Pair<T?, Array<T>> get() = (head to tail)
+
+val IntArray.head: Int? get() = firstOrNull()
+val IntArray.tail: IntArray get() = sliceArray(1 until size)
+val IntArray.headAndTail: Pair<Int?, IntArray> get() = (head to tail)
+
+val BooleanArray.head: Boolean? get() = firstOrNull()
+val BooleanArray.tail: BooleanArray get() = sliceArray(1 until size)
+val BooleanArray.headAndTail: Pair<Boolean?, BooleanArray> get() = (head to tail)
+
+val CharArray.head: Char? get() = firstOrNull()
+val CharArray.tail: CharArray get() = sliceArray(1 until size)
+val CharArray.headAndTail: Pair<Char?, CharArray> get() = (head to tail)
+
+val DoubleArray.head: Double? get() = firstOrNull()
+val DoubleArray.tail: DoubleArray get() = sliceArray(1 until size)
+val DoubleArray.headAndTail: Pair<Double?, DoubleArray> get() = (head to tail)
 
 /**
  * Source: http://tinyurl.com/y92rp67r
@@ -42,23 +50,27 @@ inline fun <K> IntArray.groupingBy(crossinline keySelector: (Int) -> K): Groupin
 }
 
 /**
- * Return a map where the entries are (element -> # of occurrences)
+ * Return a map where for each entry, the key is an [Int] in the array, and
+ * its value is the number of occurrences of the key in the array.
  */
 fun IntArray.frequencyMap(): Map<Int, Int> = groupingBy { it }.eachCount()
 
 /**
- * Return a map where the entries are (element -> # of occurrences)
+ * Return a map where for each entry, the key is an element in the array, and
+ * its value is the number of occurrences of the element in the array.
  */
 fun <T> Array<T>.frequencyMap(): Map<T, Int> = groupingBy { it }.eachCount()
 
 /**
- * Return a map where the entries are (element -> List of indices containing element)
+ * Return a map where for each entry, the key is an [Int] in the array, and
+ * its value is a list of the indices at which the key is found in the array.
  */
 fun IntArray.valueToIndicesMap(): Map<Int, List<Int>> = withIndex()
     .groupBy(keySelector = { it.value }, valueTransform = { it.index })
 
 /**
- * Return a map where the entries are (element -> List of indices containing element)
+ * Return a map where for each entry, the key is an element in the array, and
+ * its value is a list of the indices at which the element is found in the array.
  */
 fun <T> Array<T>.valueToIndicesMap(): Map<T, List<Int>> = withIndex()
     .groupBy(keySelector = { it.value }, valueTransform = { it.index })
@@ -127,18 +139,8 @@ fun CharArray.reverseElementsInRange(indexRange: IntRange) {
 }
 
 /**
- * Return the first element (nullable) and the tail of the list.
+ * Check if all elements in the [Array] are sorted (in increasing order).
  */
-fun IntArray.headAndTail(): Pair<Int?, IntArray> {
-    if (isEmpty()) return (null to intArrayOf())
-    return firstOrNull() to sliceArray(1 until size)
-}
-
-fun IntArray.headAndTailArrays(): Pair<IntArray, IntArray> {
-    if (isEmpty()) return (intArrayOf() to intArrayOf())
-    return sliceArray(0 until 1) to sliceArray(1 until size)
-}
-
 fun <T : Comparable<T>> Array<T>.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
 fun IntArray.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
 fun CharArray.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
@@ -147,6 +149,9 @@ fun ShortArray.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= t
 fun DoubleArray.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
 fun FloatArray.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
 
+/**
+ * Check if all elements in the [Array] are sorted in _descending_ order.
+ */
 fun <T : Comparable<T>> Array<T>.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
 fun IntArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
 fun CharArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
@@ -155,57 +160,38 @@ fun DoubleArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> t
 fun FloatArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
 fun LongArray.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
 
-
-/* Matrices - Array<IntArray> */
-
-typealias Matrix = Array<IntArray>
-
-val Matrix.rows: Int get() = size
-val Matrix.columns: Int get() = if (isEmpty()) 0 else this[0].size
-
-val Matrix.rowRange: IntRange get() = 0..lastIndex
-val Matrix.columnRange: IntRange get() = if (isEmpty()) 0..0 else 0..this[0].lastIndex
-
-val Matrix.lastRow: Int get() = lastIndex
-val Matrix.lastColumn: Int get() = if (isEmpty()) -1 else this[0].lastIndex
-
-fun Matrix.toList(): List<List<Int>> = fold(mutableListOf()) { acc, intArr ->
-    acc.apply {
-        acc.add(intArr.toList())
+/**
+ * Returns all contiguous, non-empty subarrays
+ *
+ * **Time**: `O(n^2)`
+ *
+ * **Space**: `O(n)`
+ */
+fun IntArray.subarrays(): List<IntArray> =
+    foldIndexed(mutableListOf()) { i, acc, _ ->
+        (i..lastIndex).forEach { j ->
+            acc.apply {
+                acc.add(sliceArray(i..j))
+            }
+        }
+        acc
     }
-}
 
 
 /**
- * Create a 2D array from a list of lists.
+ * Returns all contiguous, non-empty sublists
+ *
+ * **Time**: `O(n^2)`
+ *
+ * **Space**: `O(n)`
  */
-fun List<List<Int>>.toMatrix(): Matrix = Array(size = size, init = { i -> this[i].toIntArray() })
-
-fun Matrix.transpose(): Matrix {
-    val transposed: Matrix = Array(columns) { IntArray(rows) }
-    (0..lastRow).forEach { i ->
-        (0..lastColumn).forEach { j ->
-            transposed[j][i] = this[i][j]
+fun IntArray.sublists(): List<List<Int>> =
+    foldIndexed(mutableListOf()) { i, acc, _ ->
+        (i..lastIndex).forEach { j ->
+            val sublist = slice(i..j)
+            acc.apply {
+                acc += sublist
+            }
         }
+        acc
     }
-    return transposed
-}
-
-
-fun IntArray.subarrays(): List<IntArray> = foldIndexed(mutableListOf()) { i, acc, _ ->
-    (i..lastIndex).forEach { j ->
-        acc.apply { acc.add(sliceArray(i..j)) }
-    }
-    acc
-}
-
-
-fun IntArray.sublists(): List<List<Int>> = foldIndexed(mutableListOf()) { i, acc, _ ->
-    (i..lastIndex).forEach { j ->
-        val sublist = slice(i..j)
-        acc.apply {
-            acc += sublist
-        }
-    }
-    acc
-}

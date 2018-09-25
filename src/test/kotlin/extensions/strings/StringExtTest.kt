@@ -24,6 +24,27 @@ class StringExtTest {
     }
 
     @Test
+    fun headAndTail() {
+        assertEquals(('f' to "oobar"), "foobar".headAndTail)
+        assertEquals(('f' to ""), "f".headAndTail)
+        assertEquals((null to ""), "".headAndTail)
+    }
+
+    @Test
+    fun dropFirst() {
+        assertEquals("oobar", "foobar".dropFirst())
+        assertEquals("", "".dropFirst())
+        assertEquals("", "f".dropFirst())
+    }
+
+    @Test
+    fun dropLast() {
+        assertEquals("fooba", "foobar".dropLast())
+        assertEquals("", "".dropLast())
+        assertEquals("", "f".dropLast())
+    }
+
+    @Test
     fun reverseCharsInRange() {
         assertEquals("hlleo", "hello".reverseCharsInRange(1..3))
         assertEquals("niltok", "kotlin".reverseCharsInRange(0..5))
@@ -56,6 +77,22 @@ class StringExtTest {
     }
 
     @Test
+    fun characterIndices() {
+        assertEquals(
+            mapOf(
+                'l' to listOf(0, 4),
+                'o' to listOf(1, 9),
+                'v' to listOf(2),
+                'e' to listOf(3, 5, 6, 11),
+                't' to listOf(7),
+                'c' to listOf(8),
+                'd' to listOf(10)
+            ),
+            "loveleetcode".characterIndices()
+        )
+    }
+
+    @Test
     fun distinctChars() {
         assertEquals(listOf('f', 'o', 'b', 'a', 'r'), "foobar".distinctChars())
         assertEquals(listOf('k', 'o', 't', 'l', 'i', 'n'), "kotlin".distinctChars())
@@ -72,6 +109,35 @@ class StringExtTest {
         assertEquals("14789abc", "19c7a4b8".toSortedString())
         assertEquals("14789ABc", "19c7A4B8".toSortedString())
         assertEquals("\t !$&*14789abc", "1 *&9c7a\t4b!$8".toSortedString())
+    }
+
+    @Test
+    fun isAnagramOf() {
+        assertTrue("anagram".isAnagramOf("nagaram"))
+        assertTrue("rac".isAnagramOf("car"))
+        assertFalse("rat".isAnagramOf("car"))
+        assertFalse("aa".isAnagramOf("a"))
+    }
+
+    @Test
+    fun substrings() {
+        assertEquals(
+            listOf("", "a", "ab", "abc", "b", "bc", "c"),
+            "abc".substrings()
+        )
+
+        assertEquals(
+            listOf(
+                "",
+                "f", "fo", "foo", "foob", "fooba", "foobar",
+                "o", "oo", "oob", "ooba", "oobar",
+                "o", "ob", "oba", "obar",
+                "b", "ba", "bar",
+                "a", "ar",
+                "r"
+            ),
+            "foobar".substrings()
+        )
     }
 
 }

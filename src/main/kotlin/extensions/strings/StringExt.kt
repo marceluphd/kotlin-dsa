@@ -10,6 +10,28 @@ val String.isAllCaps: Boolean get() = all { it.isUpperCase() }
 /** True if every character in the String is a lowercase letter. */
 val String.isAllLowercase: Boolean get() = all { it.isLowerCase() }
 
+val String.head: Char? get() = firstOrNull()
+val String.tail: String get() = drop(1)
+val String.headAndTail: Pair<Char?, String> get() = (head to tail)
+
+/**
+ * Returns a String containing all characters except the first element.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
+ */
+fun String.dropFirst(): String = drop(1)
+
+/**
+ * Returns a String containing all characters except the last element.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(n)`
+ */
+fun String.dropLast(): String = dropLast(1)
+
 /**
  * Return a String with the elements in the specified range reversed.
  * @throws StringIndexOutOfBoundsException if [indexRange] not in `0..lastIndex`
@@ -37,16 +59,38 @@ fun String.characterFrequencies(caseSensitive: Boolean = true): Map<Char, Int> =
 fun String.characterIndices(): Map<Char, List<Int>> = withIndex()
     .groupBy(keySelector = { it.value }, valueTransform = { it.index })
 
-
 /**
- * Return a list of the distinct chars in the string (retaining order).
+ * Return a [List] of the distinct chars in the string (retaining order).
  */
 fun String.distinctChars(): List<Char> = toCharArray().distinct()
 
 /**
- * Returns a string with the chars sorted. Sorts by the Char's Int value.
+ * Returns a [String] with the chars sorted. Sorts by the Char's Int value (ASCII value).
  * If a string contains whitespace or punctuation characters, the sorted order
  * will be by increasing [ASCII value](https://www.rapidtables.com/code/text/ascii-table.html).
  */
 fun String.toSortedString(): String = toCharArray().sorted().joinToString("")
 
+/**
+ * Returns true if the [String] is an anagram of [other] (i.e., a permutation of the letters in this
+ * String could be rearranged to form the [other] string).
+ */
+fun String.isAnagramOf(other: String): Boolean = toCharArray().sorted() == other.toCharArray().sorted()
+
+/**
+ * Returns all (contiguous) substrings of length `0..n`.
+ * May contain duplicates.
+ *
+ * **Time**: `O(n^2)`
+ *
+ * **Space**: `O(n)`
+ */
+fun String.substrings(): List<String> {
+    val substrings = arrayListOf("")
+    for (i in indices) {
+        for (j in (i..lastIndex)) {
+            substrings += substring(i..j)
+        }
+    }
+    return substrings
+}

@@ -10,7 +10,9 @@ package extensions.lists
 fun <E> MutableList<E>.prepend(element: E) = add(0, element)
 
 /**
- * Inserts all of the elements in the specified collection [elements] into this list at the beginning of the list.
+ * Inserts all of the elements in the specified [Collection] [elements] into this list
+ * at the start of the list.
+ *
  * @return `true` if the list was changed as the result of the operation.
  */
 fun <E> MutableList<E>.prependAll(elements: Collection<E>): Boolean = addAll(0, elements)
