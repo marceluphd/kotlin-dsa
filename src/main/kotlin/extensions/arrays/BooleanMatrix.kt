@@ -5,14 +5,20 @@ package extensions.arrays
  */
 typealias BooleanMatrix = Array<BooleanArray>
 
+/** Returns the number of rows in the matrix. */
 val BooleanMatrix.rows: Int get() = size
+/** Returns the number of columns in the matrix. */
 val BooleanMatrix.columns: Int get() = if (isEmpty()) 0 else this[0].size
 
-val BooleanMatrix.lastRow: Int get() = lastIndex
-val BooleanMatrix.lastColumn: Int get() = if (isEmpty()) -1 else this[0].lastIndex
+/** Returns the range of valid row indices for this matrix. */
+val BooleanMatrix.rowIndices: IntRange get() = 0..lastIndex
+/** Returns the range of valid column indices for this matrix. */
+val BooleanMatrix.columnIndices: IntRange get() = if (isEmpty()) IntRange.EMPTY else 0..this[0].lastIndex
 
-val BooleanMatrix.rowRange: IntRange get() = 0..lastIndex
-val BooleanMatrix.columnRange: IntRange get() = if (isEmpty()) IntRange.EMPTY else 0..this[0].lastIndex
+/** Returns the index of the last row in the matrix or -1 if the matrix is empty. */
+val BooleanMatrix.lastRowIndex: Int get() = lastIndex
+/** Returns the index of the last column in the matrix or -1 if the matrix is empty. */
+val BooleanMatrix.lastColumnIndex: Int get() = if (isEmpty()) -1 else this[0].lastIndex
 
 /**
  * Creates an [m] x [n] [BooleanMatrix] where all values are `false`.
@@ -45,6 +51,9 @@ fun buildBooleanMatrix(vararg rows: List<Boolean>): BooleanMatrix {
     return matrix
 }
 
+/**
+ * Convert the [BooleanMatrix] to a 2D [List].
+ */
 fun BooleanMatrix.toList(): List<List<Boolean>> = fold(mutableListOf()) { acc, intArr ->
     acc.apply {
         acc.add(intArr.toList())
@@ -52,14 +61,17 @@ fun BooleanMatrix.toList(): List<List<Boolean>> = fold(mutableListOf()) { acc, i
 }
 
 /**
- * Create a 2D array from a list of lists.
+ * Create an [BooleanMatrix] from a 2D [List].
  */
 fun List<List<Boolean>>.toMatrix(): BooleanMatrix = Array(size = size, init = { i -> this[i].toBooleanArray() })
 
-fun BooleanMatrix.debugString(): String = with(StringBuilder()) {
-    rowRange.forEach { r ->
-        append(this@debugString[r].contentToString())
-        if (r < this@debugString.lastIndex)
+/**
+ * Returns a string representation of the contents of the BooleanMatrix as if it were a List<List<Int>>.
+ */
+fun BooleanMatrix.contentToString(): String = with(StringBuilder()) {
+    rowIndices.forEach { r ->
+        append(this@contentToString[r].contentToString())
+        if (r < this@contentToString.lastIndex)
             append("\n")
     }
     toString()

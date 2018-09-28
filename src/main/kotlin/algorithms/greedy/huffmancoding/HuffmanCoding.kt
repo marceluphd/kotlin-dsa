@@ -1,4 +1,4 @@
-package algorithms.huffmancoding
+package algorithms.greedy.huffmancoding
 
 import extensions.strings.characterFrequencies
 import java.util.*

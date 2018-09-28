@@ -31,18 +31,18 @@ class BooleanMatrixTest {
     fun matrixProperties() {
         assertEquals(3, matrix3x4.rows)
         assertEquals(4, matrix3x4.columns)
-        assertEquals(2, matrix3x4.lastRow)
-        assertEquals(3, matrix3x4.lastColumn)
-        assertEquals((0 until 3), matrix3x4.rowRange)
-        assertEquals((0 until 4), matrix3x4.columnRange)
+        assertEquals(2, matrix3x4.lastRowIndex)
+        assertEquals(3, matrix3x4.lastColumnIndex)
+        assertEquals((0 until 3), matrix3x4.rowIndices)
+        assertEquals((0 until 4), matrix3x4.columnIndices)
         assertEquals(1, matrix1x3.rows)
         assertEquals(3, matrix1x3.columns)
-        assertEquals(0, matrix1x3.lastRow)
-        assertEquals(2, matrix1x3.lastColumn)
-        assertEquals((0 until 1), matrix1x3.rowRange)
-        assertEquals((0 until 3), matrix1x3.columnRange)
-        assertEquals(IntRange.EMPTY, emptyArray<IntArray>().rowRange)
-        assertEquals(IntRange.EMPTY, emptyArray<IntArray>().columnRange)
+        assertEquals(0, matrix1x3.lastRowIndex)
+        assertEquals(2, matrix1x3.lastColumnIndex)
+        assertEquals((0 until 1), matrix1x3.rowIndices)
+        assertEquals((0 until 3), matrix1x3.columnIndices)
+        assertEquals(IntRange.EMPTY, emptyArray<IntArray>().rowIndices)
+        assertEquals(IntRange.EMPTY, emptyArray<IntArray>().columnIndices)
     }
 
     @Test
@@ -108,10 +108,10 @@ class BooleanMatrixTest {
     }
 
     @Test
-    fun debugString() {
+    fun contentToString() {
         assertEquals(
             "[false, true, false, true]\n[false, true, false, true]\n[false, true, false, true]",
-            matrix3x4.debugString()
+            matrix3x4.contentToString()
         )
     }
 

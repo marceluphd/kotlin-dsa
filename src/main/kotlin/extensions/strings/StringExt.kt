@@ -94,3 +94,42 @@ fun String.substrings(): List<String> {
     }
     return substrings
 }
+
+
+/**
+ * Returns a new string with the last occurrence of [oldChar] replaced with [newChar].
+ * @param oldChar The Char to replace
+ * @param newChar The Char to replace [oldChar] with
+ * @param startIndex The index to search backwards from (default: lastIndex)
+ * @param ignoreCase if true, either lowercase or uppercase instances of [oldChar] will be replaced (default: false).
+ * @return a new string with the last occurrence of [oldChar] replaced with [newChar], or the same String if
+ * [oldChar] was not found.
+ */
+fun String.replaceLast(
+    oldChar: Char,
+    newChar: Char,
+    startIndex: Int = lastIndex,
+    ignoreCase: Boolean = false
+): String {
+    val index = lastIndexOf(char = oldChar, startIndex = startIndex, ignoreCase = ignoreCase)
+    return if (index < 0) this else this.replaceRange(index, index + 1, newChar.toString())
+}
+
+/**
+ * Returns a new string with the last occurrence of [oldValue] replaced with [newValue].
+ * @param oldValue The String to replace
+ * @param newValue The String to replace [oldValue] with
+ * @param startIndex The index to search backwards from (default: lastIndex)
+ * @param ignoreCase if true, will replace the last instance of [oldValue] with any combination of casing (default: false).
+ * @return a new string with the last occurrence of [oldValue] replaced with [newValue], or the same String if
+ * [oldValue] was not found.
+ */
+fun String.replaceLast(
+    oldValue: String,
+    newValue: String,
+    startIndex: Int = lastIndex,
+    ignoreCase: Boolean = false
+): String {
+    val index = lastIndexOf(string = oldValue, startIndex = startIndex, ignoreCase = ignoreCase)
+    return if (index < 0) this else this.replaceRange(index, index + oldValue.length, newValue)
+}

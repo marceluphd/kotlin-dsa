@@ -198,7 +198,6 @@ fun linkedListOf(vararg elements: Int): ListNode {
     return sentinel.next!!
 }
 
-
 /**
  * @return a [List] of the values of each node in the linked list.
  */

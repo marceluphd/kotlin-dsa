@@ -5,31 +5,45 @@ package extensions.arrays
  */
 typealias IntMatrix = Array<IntArray>
 
+/** Returns the number of rows in the matrix. */
 val IntMatrix.rows: Int get() = size
+/** Returns the number of columns in the matrix. */
 val IntMatrix.columns: Int get() = if (isEmpty()) 0 else this[0].size
 
-val IntMatrix.lastRow: Int get() = lastIndex
-val IntMatrix.lastColumn: Int get() = if (isEmpty()) -1 else this[0].lastIndex
+/** Returns the range of valid row indices for this matrix. */
+val IntMatrix.rowIndices: IntRange get() = 0..lastIndex
+/** Returns the range of valid column indices for this matrix. */
+val IntMatrix.columnIndices: IntRange get() = if (isEmpty()) IntRange.EMPTY else 0..this[0].lastIndex
 
-val IntMatrix.rowRange: IntRange get() = 0..lastIndex
-val IntMatrix.columnRange: IntRange get() = if (isEmpty()) IntRange.EMPTY else 0..this[0].lastIndex
+/** Returns the index of the last row in the matrix or -1 if the matrix is empty. */
+val IntMatrix.lastRowIndex: Int get() = lastIndex
+/** Returns the index of the last column in the matrix or -1 if the matrix is empty. */
+val IntMatrix.lastColumnIndex: Int get() = if (isEmpty()) -1 else this[0].lastIndex
 
+/**
+ * Returns the transpose of the Matrix.
+ */
 fun IntMatrix.transpose(): IntMatrix {
     val transposed: IntMatrix = Array(columns) { IntArray(rows) }
-    (0..lastRow).forEach { i ->
-        (0..lastColumn).forEach { j ->
+    (0..lastRowIndex).forEach { i ->
+        (0..lastColumnIndex).forEach { j ->
             transposed[j][i] = this[i][j]
         }
     }
     return transposed
 }
 
+/**
+ * Performs Depth-First Search on the matrix.
+ * @param visited A [BooleanMatrix] used for tracking the visited matrix elements.
+ * @param visit The action to perform for each element.
+ */
 fun IntMatrix.dfs(
-    visited: Array<BooleanArray> = Array(size) { BooleanArray(this[0].size) },
+    visited: BooleanMatrix = Array(size) { BooleanArray(this[0].size) },
     visit: (Int, Int) -> Unit
 ) {
-    rowRange.forEach { r ->
-        columnRange.forEach { c ->
+    rowIndices.forEach { r ->
+        columnIndices.forEach { c ->
             visited[r][c] = true
             visit(r, c)
         }
@@ -68,6 +82,9 @@ fun buildIntMatrix(vararg rows: List<Int>): IntMatrix {
     return matrix
 }
 
+/**
+ * Convert the [IntMatrix] to a 2D [List].
+ */
 fun IntMatrix.toList(): List<List<Int>> = fold(mutableListOf()) { acc, intArr ->
     acc.apply {
         acc.add(intArr.toList())
@@ -75,14 +92,17 @@ fun IntMatrix.toList(): List<List<Int>> = fold(mutableListOf()) { acc, intArr ->
 }
 
 /**
- * Create a 2D array from a list of lists.
+ * Create an [IntMatrix] from a 2D [List].
  */
 fun List<List<Int>>.toMatrix(): IntMatrix = Array(size = size, init = { i -> this[i].toIntArray() })
 
-fun IntMatrix.debugString(): String = with(StringBuilder()) {
-    rowRange.forEach { r ->
-        append(this@debugString[r].contentToString())
-        if (r < this@debugString.lastIndex)
+/**
+ * Returns a string representation of the contents of the IntMatrix as if it were a List<List<Int>>.
+ */
+fun IntMatrix.contentToString(): String = with(StringBuilder()) {
+    rowIndices.forEach { r ->
+        append(this@contentToString[r].contentToString())
+        if (r < this@contentToString.lastIndex)
             append("\n")
     }
     toString()

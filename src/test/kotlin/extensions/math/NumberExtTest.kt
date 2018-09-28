@@ -4,6 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.math.BigInteger
 
 class NumberExtTest {
 
@@ -105,5 +106,37 @@ class NumberExtTest {
         assertEquals(1f, minOf(1f, 2f, 3f, 4f))
         assertEquals(1.0, minOf(1.0, 2.0, 3.0, 4.0), 0.00001)
         assertEquals(1.0001, minOf(1.0001, 1.0002, 3.0, 4.0), 0.00001)
+    }
+
+    @Test
+    fun `coerceToIntRange - Long`() {
+        assertEquals(0, 0L.coerceToIntRange())
+        assertEquals(-999, (-999L).coerceToIntRange())
+        assertEquals(Int.MIN_VALUE, (Int.MIN_VALUE).toLong().coerceToIntRange())
+        assertEquals(Int.MAX_VALUE, (Int.MAX_VALUE).toLong().coerceToIntRange())
+        assertEquals(Int.MAX_VALUE, 2147483648L.coerceToIntRange())
+        assertEquals(Int.MIN_VALUE, (-91283472332L).coerceToIntRange())
+    }
+
+    @Test
+    fun `coerceToIntRange - BigInteger`() {
+        assertEquals(0, BigInteger.ZERO.coerceToIntRange())
+        assertEquals(1, BigInteger.ONE.coerceToIntRange())
+        assertEquals(10, BigInteger.TEN.coerceToIntRange())
+        assertEquals(-999, (-999).toBigInteger().coerceToIntRange())
+        assertEquals(Int.MIN_VALUE, (Int.MIN_VALUE).toBigInteger().coerceToIntRange())
+        assertEquals(Int.MAX_VALUE, (Int.MAX_VALUE).toBigInteger().coerceToIntRange())
+        assertEquals(Int.MAX_VALUE, 2147483648L.toBigInteger().coerceToIntRange())
+        assertEquals(Int.MIN_VALUE, (-91283472332L).toBigInteger().coerceToIntRange())
+    }
+
+    @Test
+    fun `coerceToIntRange - Double`() {
+        assertEquals(0, 0.0.coerceToIntRange())
+        assertEquals(-999, (-999.0).coerceToIntRange())
+        assertEquals(Int.MIN_VALUE, (Int.MIN_VALUE).toDouble().coerceToIntRange())
+        assertEquals(Int.MAX_VALUE, (Int.MAX_VALUE).toDouble().coerceToIntRange())
+        assertEquals(Int.MAX_VALUE, 2147483648.0.toLong().coerceToIntRange())
+        assertEquals(Int.MIN_VALUE, (-91283472332.0).coerceToIntRange())
     }
 }

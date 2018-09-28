@@ -140,4 +140,21 @@ class StringExtTest {
         )
     }
 
+    @Test
+    fun `replaceLast - Char`() {
+        assertEquals("foobaz", "foobar".replaceLast(oldChar = 'r', newChar = 'z', ignoreCase = false))
+        assertEquals("foobaz", "foobaR".replaceLast(oldChar = 'r', newChar = 'z', ignoreCase = true))
+        assertEquals("foobaR", "foobaR".replaceLast(oldChar = 'r', newChar = 'z', ignoreCase = false))
+        assertEquals("foobaz", "foobaR".replaceLast(oldChar = 'r', newChar = 'z', ignoreCase = true))
+        assertEquals("foobar", "foobar".replaceLast(oldChar = 'r', newChar = 'z', startIndex = 4))
+    }
+
+    @Test
+    fun `replaceLast - String`() {
+        assertEquals("(()())__abcxyz", "(()())()abcxyz".replaceLast(oldValue = "()", newValue = "__"))
+        assertEquals("(()())()zyxcba", "(()())()abcxyz".replaceLast(oldValue = "abcxyz", newValue = "zyxcba"))
+        assertEquals("(()())()CBAxyz", "(()())()abcxyz".replaceLast(oldValue = "ABC", newValue = "CBA", ignoreCase = true))
+        assertEquals("(()())()abcxyz", "(()())()abcxyz".replaceLast(oldValue = "ABC", newValue = "CBA", ignoreCase = false))
+        assertEquals("(()())()abcxyz", "(()())()abcxyz".replaceLast(oldValue = "abcxyz", newValue = "zyxcba", startIndex = 4))
+    }
 }

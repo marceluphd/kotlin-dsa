@@ -1,5 +1,6 @@
 package extensions.math
 
+import java.math.BigInteger
 import java.text.DecimalFormat
 import kotlin.math.absoluteValue
 import kotlin.math.log10
@@ -90,6 +91,20 @@ fun minOf(vararg numbers: Long): Long {
     return numbers.min()!!
 }
 
+/**
+ * Coerce the [Long] to be within range [Int.MIN_VALUE]..[Int.MAX_VALUE], and convert the
+ * coerced value to an [Int].
+ */
+fun Long.coerceToIntRange(): Int = coerceIn(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
+
+/********************
+ * BigInteger
+ ********************/
+/**
+ * Coerce the [BigInteger] to be within range [Int.MIN_VALUE]..[Int.MAX_VALUE], and convert the
+ * coerced value to an [Int].
+ */
+fun BigInteger.coerceToIntRange(): Int = coerceIn(Int.MIN_VALUE.toBigInteger()..Int.MAX_VALUE.toBigInteger()).toInt()
 
 /********************
  * Double
@@ -106,6 +121,12 @@ fun Double.roundedToNDecimalPlaces(n: Int): Double {
     return formatter.format(this).toDouble()
 }
 
+/**
+ * Coerce the [Double] to be within range [Int.MIN_VALUE]..[Int.MAX_VALUE], and convert the
+ * coerced value to an [Int].
+ */
+fun Double.coerceToIntRange(): Int = coerceIn(Int.MIN_VALUE.toDouble()..Int.MAX_VALUE.toDouble()).toInt()
+
 /********************
  * Float
  ********************/
@@ -114,3 +135,7 @@ fun minOf(vararg numbers: Float): Float {
     require(numbers.isNotEmpty()) { "Cannot take min of 0 numbers" }
     return numbers.min()!!
 }
+
+/********************
+ * BigDecimal
+ ********************/

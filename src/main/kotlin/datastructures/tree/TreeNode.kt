@@ -6,7 +6,7 @@ import datastructures.tree.DFSTraversalOrder.PREORDER
 import java.util.*
 
 /**
- * Definition for a extensions.binary tree node.
+ * Definition for a binary tree node.
  */
 class TreeNode(var `val`: Int = 0, var left: TreeNode? = null, var right: TreeNode? = null) {
 
@@ -76,7 +76,7 @@ val TreeNode.children: Pair<TreeNode?, TreeNode?>
     get() = Pair(left, right)
 
 /**
- * Search for a value in the extensions.binary tree, returning the node
+ * Search for a value in the binary tree, returning the node
  * containing the value if it is found, or else null.
  *
  * **Time**: `O(n)`
@@ -110,7 +110,11 @@ fun TreeNode?.find(searchValue: Int): TreeNode? {
  */
 operator fun TreeNode.contains(value: Int): Boolean = find(value) != null
 
-enum class DFSTraversalOrder { PREORDER, INORDER, POSTORDER; }
+sealed class DFSTraversalOrder {
+    object PREORDER : DFSTraversalOrder()
+    object INORDER : DFSTraversalOrder()
+    object POSTORDER : DFSTraversalOrder()
+}
 
 /**
  * Perform depth-first traversal on the tree, executing [visit] on each node.
@@ -330,10 +334,10 @@ fun TreeNode?.allPaths(
     } ?: paths
 
 /**
- * Create a extensions.binary tree from the given elements.
+ * Create a binary tree from the given elements.
  * Insertion order is the same as LeetCode's 'Tree Visualizer'
  * @param elements The values to add to the tree.
- * @return The root of a extensions.binary tree containing the [elements]
+ * @return The root of a binary tree containing the [elements]
  * @throws IllegalArgumentException If [elements] is empty
  */
 fun buildTree(vararg elements: Int?): TreeNode? {
@@ -369,14 +373,14 @@ fun buildTree(vararg elements: Int?): TreeNode? {
 }
 
 /**
- * Create a extensions.binary search tree from the given elements.
+ * Create a binary search tree from the given elements.
  * Insertion order is the same as LeetCode's 'Tree Visualizer'.
  * For the BST property to be satisfied, all left subtree values must be less than the root,
  * and all right subtree values must be greater. Duplicates are not permitted.
  * @param elements The values to add to the tree.
  * @return The root of a BST containing the [elements], or `null` if
  *         elements is empty.
- * @throws IllegalArgumentException if the elements cannot create a valid extensions.binary search tree.
+ * @throws IllegalArgumentException if the elements cannot create a valid binary search tree.
  */
 fun buildBST(vararg elements: Int?): TreeNode? {
     val tree = buildTree(*elements)
@@ -385,7 +389,7 @@ fun buildBST(vararg elements: Int?): TreeNode? {
 }
 
 /**
- * Return a list of the values in the tree. For extensions.binary search trees, the values
+ * Return a list of the values in the tree. For binary search trees, the values
  * will be sorted.
  *
  * **Time**: `O(n)`
