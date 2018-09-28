@@ -1,13 +1,11 @@
 package algorithms.greedy.activityselection
 
 import misc.activity.Activity
-import misc.activity.isCompatibleWith
 
 fun scheduleActivities(activities: List<Activity>): Set<Activity> {
-
     val sortedActivities = activities.sortedBy { (_, interval) -> interval.endTime }
 
-    var lastSelected = sortedActivities.first()    // stores the activity last selected
+    var lastSelected = sortedActivities.first()
     val selectedActivities: MutableSet<Activity> = hashSetOf(lastSelected)
 
     sortedActivities.drop(1).forEach { activity ->
