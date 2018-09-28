@@ -1,5 +1,7 @@
 package extensions.lists
 
+import extensions.arrays.zipWithNext
+
 /**
  * List extensions
  */
@@ -43,8 +45,8 @@ fun <T> List<T>.toTriple(): Triple<T, T, T> {
     return Triple(this[0], this[1], this[2])
 }
 
-fun <T : Comparable<T>> List<T>.isSorted(): Boolean = (0 until lastIndex).all { i -> this[i] <= this[i + 1] }
-fun <T : Comparable<T>> List<T>.isSortedDescending(): Boolean = (0 until lastIndex).all { i -> this[i] >= this[i + 1] }
+fun <T : Comparable<T>> List<T>.isSorted(): Boolean = zipWithNext().all { (a, b) -> b >= a }
+fun <T : Comparable<T>> List<T>.isSortedDescending(): Boolean = zipWithNext().all { (a, b) -> b <= a }
 
 /* 2D Lists: List<List<T>> */
 val <T> List<List<T>>.rows: Int get() = size

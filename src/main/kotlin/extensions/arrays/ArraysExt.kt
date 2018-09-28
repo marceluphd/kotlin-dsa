@@ -75,6 +75,11 @@ fun IntArray.valueToIndicesMap(): Map<Int, List<Int>> = withIndex()
 fun <T> Array<T>.valueToIndicesMap(): Map<T, List<Int>> = withIndex()
     .groupBy(keySelector = { it.value }, valueTransform = { it.index })
 
+
+fun <T> Array<T>.zipWithNext(): List<Pair<T, T>> = zip(drop(1))
+fun IntArray.zipWithNext(): List<Pair<Int, Int>> = zip(drop(1))
+
+
 /**
  * **Mutating** - Swap the elements at indices [i] and [j].
  */

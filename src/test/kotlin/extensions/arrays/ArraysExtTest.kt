@@ -126,6 +126,26 @@ class ArraysExtTest {
     }
 
     @Test
+    fun zipWithNext() {
+        assertEquals(
+            listOf("foo", "bar", "baz", "omega", "theta").zipWithNext(),
+            arrayOf("foo", "bar", "baz", "omega", "theta").zipWithNext()
+        )
+        assertEquals(
+            listOf(1, 2, 3, 4, 5, 6).zipWithNext(),
+            intArrayOf(1, 2, 3, 4, 5, 6).zipWithNext()
+        )
+        assertEquals(
+            listOf(1).zipWithNext(),
+            intArrayOf(1).zipWithNext()
+        )
+        assertEquals(
+            listOf<Int>().zipWithNext(),
+            intArrayOf().zipWithNext()
+        )
+    }
+
+    @Test
     fun swap() {
         val strArr = arrayOf("foo", "bar", "foo", "baz")
         strArr.swap(0, 2)
