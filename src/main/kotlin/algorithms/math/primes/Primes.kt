@@ -22,7 +22,7 @@ object SieveOfEratosthenes {
 
     private fun sieveOfEratosthenes(n: Int): List<Int> {
         /* Index is the number, boolean value is whether the number is possibly prime */
-        val nums = BooleanArray(n + 1, { i -> i !in 0..1 })   // initially true for all x in 2..n
+        val nums = BooleanArray(n + 1) { i -> i !in 0..1 }   // initially true for all x in 2..n
 
         var p = 2
         while (p != -1) {

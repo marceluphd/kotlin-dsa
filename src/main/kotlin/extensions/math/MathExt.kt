@@ -8,10 +8,6 @@ import kotlin.math.sqrt
  * Mathematical functions
  * Permutation/Combinations taken from: https://github.com/MarcinMoskala/KotlinDiscreteMathToolkit
  */
-
-fun log2(x: Double): Double = Math.log10(x) / Math.log10(2.0)
-fun log3(x: Double): Double = Math.log10(x) / Math.log10(3.0)
-
 const val EPSILON = 1e-10
 
 /**

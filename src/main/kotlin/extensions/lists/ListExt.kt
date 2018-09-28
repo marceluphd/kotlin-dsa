@@ -1,7 +1,5 @@
 package extensions.lists
 
-import extensions.arrays.zipWithNext
-
 /**
  * List extensions
  */

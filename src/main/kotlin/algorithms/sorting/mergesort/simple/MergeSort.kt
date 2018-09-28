@@ -3,7 +3,7 @@ package algorithms.sorting.mergesort.simple
 import extensions.lists.halves
 
 /**
- * Simplest version of mergesort
+ * Simplest version of Mergesort
  */
 fun <T : Comparable<T>> mergeSort(elements: List<T>): List<T> {
     if (elements.size in 0..1)
