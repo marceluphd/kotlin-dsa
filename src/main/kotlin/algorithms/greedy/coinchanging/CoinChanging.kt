@@ -1,6 +1,5 @@
 package algorithms.greedy.coinchanging
 
-// TODO - TEST
 fun changeCoins(amountDue: Int, coins: IntArray): List<Int>? {
     var changeNeeded = amountDue
     require(coins.isNotEmpty()) { "Invalid input" }
