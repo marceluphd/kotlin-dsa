@@ -1,7 +1,7 @@
 package algorithms.math.primes
 
-import extensions.math.isPrime
 import kotlin.coroutines.experimental.buildSequence
+import kotlin.math.sqrt
 
 /**
  * Primes.
@@ -58,5 +58,17 @@ fun nthPrime(n: Int): Int {
     return primeNumberSequence().take(n).last()
 }
 
+/**
+ * Determines if the integer is a prime number.
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(1)`
+ */
+fun Int.isPrime(): Boolean {
+    if (this <= 1)
+        return false
 
-
+    val sqrt = sqrt(toDouble()).toInt()
+    return (2..sqrt).all { this % it != 0 }
+}
