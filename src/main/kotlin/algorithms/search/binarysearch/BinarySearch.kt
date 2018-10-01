@@ -2,7 +2,7 @@ package algorithms.search.binarysearch
 
 
 /**
- * BinarySearch
+ * Binary search implementation.
  */
 
 const val NOT_FOUND: Int = -1
@@ -26,4 +26,4 @@ fun <T : Comparable<T>> binarySearch(list: List<T>, searchKey: T): Int {
 }
 
 
-// TODO Add recursive version
+// TODO: Add recursive version
