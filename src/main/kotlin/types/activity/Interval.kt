@@ -1,4 +1,4 @@
-package misc.activity
+package types.activity
 
 data class Interval(val startTime: Time, val endTime: Time) {
     override fun toString(): String = "($startTime-$endTime)"

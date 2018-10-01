@@ -1,4 +1,4 @@
-package misc.activity
+package types.activity
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

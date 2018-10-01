@@ -1,4 +1,4 @@
-package misc.activity
+package types.activity
 
 data class Activity(val title: String = "Untitled", val time: Interval) {
     override fun toString(): String = "Activity(title='$title', time=$time)"

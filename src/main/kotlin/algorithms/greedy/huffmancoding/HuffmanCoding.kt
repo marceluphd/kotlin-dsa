@@ -3,12 +3,14 @@ package algorithms.greedy.huffmancoding
 import extensions.strings.characterFrequencies
 import java.util.*
 
-/**
- * [Huffman Coding](https://en.wikipedia.org/wiki/Huffman_coding)
- * https://github.com/rojiani/kotlin-99/blob/master/src/org/kotlin99/logic/P50.kt
- */
+
 const val INTERNAL_NODE_SYMBOL: Char = '*'
 
+/**
+ * [Huffman Coding](https://en.wikipedia.org/wiki/Huffman_coding)
+ *
+ * [rojiani/kotlin-99 - P50.kt](https://github.com/rojiani/kotlin-99/blob/master/src/org/kotlin99/logic/P50.kt)
+ */
 data class HuffmanTreeNode(
     val frequency: Int,
     val symbol: Char,
@@ -16,15 +18,10 @@ data class HuffmanTreeNode(
     val right: HuffmanTreeNode? = null
 ) : Comparable<HuffmanTreeNode> {
 
-    val isLeaf = left == null && right == null
+    val isLeaf: Boolean = left == null && right == null
 
-    override fun compareTo(other: HuffmanTreeNode): Int {
-        return this.frequency.compareTo(other.frequency)
-    }
-
-    override fun toString(): String {
-        return "(freq: $frequency, symbol: $symbol, L: $left, R: $right)"
-    }
+    override fun compareTo(other: HuffmanTreeNode): Int = this.frequency.compareTo(other.frequency)
+    override fun toString(): String = "(freq: $frequency, symbol: $symbol, L: $left, R: $right)"
 }
 
 data class HuffmanEncoding(val tree: HuffmanTreeNode, val codeByChar: Map<Char, String>)
@@ -109,8 +106,8 @@ private fun generateCodes(
         if (node.isLeaf)
             codes[node.symbol] = pathToNode
 
-        node.left?.let { generateCodes(node.left, pathToNode + "0", codes) }
-        node.right?.let { generateCodes(node.right, pathToNode + "1", codes) }
+        node.left?.let { left -> generateCodes(left, pathToNode + "0", codes) }
+        node.right?.let { right -> generateCodes(right, pathToNode + "1", codes) }
     }
 
     return codes

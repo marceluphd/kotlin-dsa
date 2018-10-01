@@ -1,9 +1,9 @@
 package algorithms.greedy.activityselection
 
-import misc.activity.Activity
-import misc.activity.Interval
 import org.junit.Assert.*
 import org.junit.Test
+import types.activity.Activity
+import types.activity.Interval
 
 class ActivitySelectionTest {
 

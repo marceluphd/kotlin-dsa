@@ -1,4 +1,4 @@
-package misc.activity
+package types.activity
 
 /**
  * A simple time class with hour and minutes.

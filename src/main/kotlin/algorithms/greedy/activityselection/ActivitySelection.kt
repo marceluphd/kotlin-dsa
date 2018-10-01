@@ -1,6 +1,6 @@
 package algorithms.greedy.activityselection
 
-import misc.activity.Activity
+import types.activity.Activity
 
 fun scheduleActivities(activities: List<Activity>): Set<Activity> {
     val sortedActivities = activities.sortedBy { (_, interval) -> interval.endTime }
