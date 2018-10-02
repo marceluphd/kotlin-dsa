@@ -1,5 +1,8 @@
 package algorithms.dynamicprogramming.fibonacci
 
+import java.lang.Thread.yield
+import kotlin.coroutines.experimental.buildSequence
+
 /**
  * Naive recursive function to find the nth Fibonacci number.
  *
@@ -81,3 +84,28 @@ object OptimizedFibonacci {
     }
 }
 
+
+/**
+ * Using [buildSequence]
+ *
+ * **Time**: `O(n)`
+ *
+ * **Space**: `O(1)`
+ */
+object SequenceFibonacci {
+
+    fun fibo(n: Int): Long = fibonacciSequence().take(n + 1).last()
+
+    /**
+     * Lazily builds a sequence one-by-one.
+     */
+    private fun fibonacciSequence(): Sequence<Long> = buildSequence {
+        var terms = Pair(0L, 1L)
+
+        // this sequence is infinite
+        while (true) {
+            yield(terms.first)
+            terms = Pair(terms.second, terms.first + terms.second)
+        }
+    }
+}

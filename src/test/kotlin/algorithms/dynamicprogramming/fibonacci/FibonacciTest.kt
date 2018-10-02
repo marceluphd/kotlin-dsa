@@ -86,4 +86,18 @@ class FibonacciTest {
         assertEquals(12586269025L, OptimizedFibonacci.fibo(50))
         assertEquals(23416728348467685L, OptimizedFibonacci.fibo(80))
     }
+
+    @Test
+    fun sequenceFibo() {
+        fibNumbers.keys.forEach { n ->
+            assertEquals(fibNumbers[n]!!, SequenceFibonacci.fibo(n))
+        }
+        assertEquals(832040L, SequenceFibonacci.fibo(30))
+    }
+
+    @Test
+    fun sequenceFiboLargeInput() {
+        assertEquals(12586269025L, SequenceFibonacci.fibo(50))
+        assertEquals(23416728348467685L, SequenceFibonacci.fibo(80))
+    }
 }
