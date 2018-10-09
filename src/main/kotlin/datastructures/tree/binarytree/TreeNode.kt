@@ -1,9 +1,11 @@
 package datastructures.tree.binarytree
 
-import datastructures.tree.binarytree.DFSTraversalOrder.*
+import datastructures.tree.binarytree.DFSTraversalOrder.INORDER
+import datastructures.tree.binarytree.DFSTraversalOrder.POSTORDER
 import java.util.*
 
 /**
+ * TODO: Make Generic
  * Definition for a binary tree node (based on LeetCode definition with some changes).
  */
 class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNode? = null) {

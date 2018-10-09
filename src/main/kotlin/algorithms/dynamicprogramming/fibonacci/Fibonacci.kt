@@ -26,9 +26,7 @@ object NaiveFibonacci {
  * **Space**: `O(n)`
  */
 object MemoizedFibonacci {
-    fun fibo(n: Int): Long {
-        return fiboMemoized(n, hashMapOf(0 to 0L, 1 to 1L))
-    }
+    fun fibo(n: Int): Long = fiboMemoized(n, hashMapOf(0 to 0L, 1 to 1L))
 
     private fun fiboMemoized(n: Int, cache: MutableMap<Int, Long>): Long {
         if (n !in cache) {
