@@ -1,4 +1,4 @@
-package datastructures.tree.binarytree
+package datastructures.tree.binarytree.simple
 
 /**
  * Sample TreeNode trees for testing purposes.

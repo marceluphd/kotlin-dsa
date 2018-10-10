@@ -1,4 +1,4 @@
-package datastructures.tree.binarytree
+package datastructures.tree.binarytree.simple
 
 import org.junit.Assert.*
 import org.junit.Ignore
@@ -18,13 +18,13 @@ class TreeNodeTest {
         assertTrue(tree123.hasTwoChildren)
         assertFalse(tree123.hasSingleChild)
 
-        val rootTree = buildTree(1)!!
+        val rootTree = datastructures.tree.binarytree.simple.buildTree(1)!!
         assertFalse(rootTree.hasLeft)
         assertFalse(rootTree.hasRight)
         assertFalse(rootTree.hasTwoChildren)
         assertFalse(rootTree.hasSingleChild)
 
-        val treeWithRightNode = buildTree(1, null, 3)!!
+        val treeWithRightNode = datastructures.tree.binarytree.simple.buildTree(1, null, 3)!!
         assertFalse(treeWithRightNode.hasLeft)
         assertTrue(treeWithRightNode.hasRight)
         assertFalse(treeWithRightNode.hasTwoChildren)
@@ -175,7 +175,19 @@ class TreeNodeTest {
     fun collectUnique() {
         assertEquals(setOf(2, 1, 3), tree123.collectUnique())
         assertEquals(setOf(1, 3, 4, 5, 6, 8, 9), bst3LevelsFull.collectUnique())
-        assertEquals(setOf(1, 2, 3, 4, 5), buildTree(1, 2, 3, 2, 3, 2, 3, 1, 3, 4, 5).collectUnique())
+        assertEquals(setOf(1, 2, 3, 4, 5), datastructures.tree.binarytree.simple.buildTree(
+            1,
+            2,
+            3,
+            2,
+            3,
+            2,
+            3,
+            1,
+            3,
+            4,
+            5
+        ).collectUnique())
     }
 
     @Test
@@ -245,28 +257,51 @@ class TreeNodeTest {
 
     @Test
     fun buildTree() {
-        val tree = buildTree(1, 2, 3)
+        val tree = datastructures.tree.binarytree.simple.buildTree(1, 2, 3)
         assertNotNull(tree)
         assertEquals(3, tree?.size)
         assertEquals(1, tree?.value)
         assertEquals(2, tree?.left?.value)
         assertEquals(3, tree?.right?.value)
 
-        val tree2 = buildTree(5, 3, 8, 1, 4, 6, 9)
+        val tree2 = datastructures.tree.binarytree.simple.buildTree(5, 3, 8, 1, 4, 6, 9)
         assertNotNull(tree2)
         assertEquals(7, tree2?.size)
         assertEquals(bst3LevelsFull, tree2)
 
-        val tree3 = buildTree(1, null, 1, null, 1, 2)
+        val tree3 = datastructures.tree.binarytree.simple.buildTree(1, null, 1, null, 1, 2)
         assertNotNull(tree3)
         assertEquals(4, tree3?.size)
         assertEquals(treeUnbalanced, tree3)
 
-        val tree4 = buildTree(1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, null, 1, 2)
+        val tree4 = datastructures.tree.binarytree.simple.buildTree(
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            null,
+            1,
+            2
+        )
         assertEquals(12, tree4?.size)
         assertEquals(treeUnbalanced2, tree4)
 
-        val tree5 = buildTree(7, null, 8, 9, 10)
+        val tree5 = datastructures.tree.binarytree.simple.buildTree(7, null, 8, 9, 10)
         assertEquals(4, tree5?.size)
         val expected = TreeNode(7).apply {
             right = TreeNode(8).apply {
@@ -279,7 +314,7 @@ class TreeNodeTest {
 
     @Test
     fun buildTreeWithNulls() {
-        val tree = buildTree(1, null, 2, 3)
+        val tree = datastructures.tree.binarytree.simple.buildTree(1, null, 2, 3)
         assertNotNull(tree)
         assertEquals(3, tree?.size)
         assertEquals(1, tree?.value)
@@ -288,7 +323,7 @@ class TreeNodeTest {
         assertEquals(3, tree?.right?.left?.value)
         assertNull(tree?.right?.left?.right)
 
-        val tree2 = buildTree(7, 4, 9, 3, null, 8, null, 1)
+        val tree2 = datastructures.tree.binarytree.simple.buildTree(7, 4, 9, 3, null, 8, null, 1)
         assertEquals(bstWithNulls, tree2)
         assertEquals(6, tree2?.size)
         assertEquals(7, tree2?.value)
@@ -301,30 +336,30 @@ class TreeNodeTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `buildTree throws exception if root is null`() {
-        buildTree(null)
+        datastructures.tree.binarytree.simple.buildTree(null)
     }
 
     @Test
     fun buildBST() {
-        val tree1 = buildBST(2, 1, 3)
+        val tree1 = datastructures.tree.binarytree.simple.buildBST(2, 1, 3)
         assertNotNull(tree1)
         assertEquals(3, tree1?.size)
         assertEquals(2, tree1?.value)
         assertEquals(1, tree1?.left?.value)
         assertEquals(3, tree1?.right?.value)
 
-        val tree2 = buildBST(7, 4, 9, 3, null, 8, null, 1)
+        val tree2 = datastructures.tree.binarytree.simple.buildBST(7, 4, 9, 3, null, 8, null, 1)
         assertEquals(bstWithNulls, tree2)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `buildBST throws exception if root is null`() {
-        buildBST(null)
+        datastructures.tree.binarytree.simple.buildBST(null)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `buildBST throws exception if elements violate BST property`() {
-        buildBST(1, 2, 3)
+        datastructures.tree.binarytree.simple.buildBST(1, 2, 3)
     }
 
     @Test

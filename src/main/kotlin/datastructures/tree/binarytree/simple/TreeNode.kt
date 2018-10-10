@@ -1,7 +1,7 @@
-package datastructures.tree.binarytree
+package datastructures.tree.binarytree.simple
 
-import datastructures.tree.binarytree.DFSTraversalOrder.INORDER
-import datastructures.tree.binarytree.DFSTraversalOrder.POSTORDER
+import datastructures.tree.binarytree.simple.DFSTraversalOrder.INORDER
+import datastructures.tree.binarytree.simple.DFSTraversalOrder.POSTORDER
 import java.util.*
 
 /**
@@ -15,6 +15,7 @@ class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNo
     val isLeaf: Boolean get() = !hasLeft && !hasRight
     val hasSingleChild: Boolean get() = (hasLeft || hasRight) && !(hasLeft && hasRight)
     val hasTwoChildren: Boolean get() = left != null && right != null
+
 
 
     /**
