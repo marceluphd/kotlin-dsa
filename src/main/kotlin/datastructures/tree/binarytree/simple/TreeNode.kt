@@ -5,7 +5,6 @@ import datastructures.tree.binarytree.simple.DFSTraversalOrder.POSTORDER
 import java.util.*
 
 /**
- * TODO: Make Generic
  * Definition for a binary tree node (based on LeetCode definition with some changes).
  */
 class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNode? = null) {
@@ -15,8 +14,6 @@ class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNo
     val isLeaf: Boolean get() = !hasLeft && !hasRight
     val hasSingleChild: Boolean get() = (hasLeft || hasRight) && !(hasLeft && hasRight)
     val hasTwoChildren: Boolean get() = left != null && right != null
-
-
 
     /**
      * Returns the number of nodes in the tree.
