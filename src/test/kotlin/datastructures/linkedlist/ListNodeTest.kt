@@ -8,6 +8,7 @@ import org.junit.Test
 class ListNodeTest {
 
     private var listA: ListNode? = linkedListOf(0, 1, 2, 3)
+    private val palindromeList: ListNode = linkedListOf(1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1)
 
     @Before
     fun setUp() {
@@ -89,34 +90,6 @@ class ListNodeTest {
     }
 
     @Test
-    fun firstOrNull() {
-        val nullList: ListNode? = null
-        assertNull(nullList?.firstOrNull { it.value == 7 })
-        assertNull(linkedListOf(1, 2, 3).firstOrNull { it.value < 0 })
-        assertEquals(2, linkedListOf(1, 2, 3).firstOrNull { it.value >= 2 }?.value)
-    }
-
-    @Test
-    fun forEach() {
-        var sum = 0
-        linkedListOf(99).forEach { sum += it.value }
-        assertEquals(99, sum)
-
-        sum = 0
-        linkedListOf(1, 2, 3, 4).forEach { sum += it.value }
-        assertEquals(10, sum)
-
-
-        sum = 0
-        linkedListOf(1, 1, 2, 3, 3, 1, 2, 3).forEach { sum += it.value }
-        assertEquals(16, sum)
-
-        val values = arrayListOf<Int>()
-        linkedListOf(1, 2, 3, 4, 5).forEach { values += it.value }
-        assertEquals(listOf(1, 2, 3, 4, 5), values)
-    }
-
-    @Test
     fun reversed() {
         val original = linkedListOf(1, 2, 3, 4, 5)
         val copy = original.copyOf()
@@ -150,7 +123,7 @@ class ListNodeTest {
         assertEquals(listOf(1), linkedListOf(1).toList())
         assertEquals(listOf(1, 2), linkedListOf(1, 2).toList())
         assertEquals(listOf(1, 2, 3), linkedListOf(1, 2, 3).toList())
-        assertEquals(listOf(1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1), linkedListOf(1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1).toList())
+        assertEquals(listOf(1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1), palindromeList.toList())
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -179,5 +152,40 @@ class ListNodeTest {
         assertEquals("(null)", nullList.contentToString())
         val linkedList = ListNode.from(listOf(0, 1, 2, 3))
         assertEquals("(0)->(1)->(2)->(3)", linkedList?.contentToString())
+    }
+
+    @Test
+    fun iterator() {
+        // Implementing iterator provides us with forEach, forEachIndexed, mapIndexed, & everything else in Iterable
+        var sum = 0
+        linkedListOf(99).forEach { sum += it }
+        assertEquals(99, sum)
+
+        sum = 0
+        linkedListOf(1, 2, 3, 4).forEach { sum += it }
+        assertEquals(10, sum)
+
+        sum = 0
+        linkedListOf(1, 1, 2, 3, 3, 1, 2, 3).forEach { sum += it }
+        assertEquals(16, sum)
+
+        val values = arrayListOf<Int>()
+        linkedListOf(1, 2, 3, 4, 5).forEach { values += it }
+        assertEquals(listOf(1, 2, 3, 4, 5), values)
+
+        val palindromeListValues = palindromeList.toList()
+        palindromeList.forEachIndexed { i, value ->
+            assertEquals(value, palindromeListValues[i])
+        }
+
+        assertEquals(
+            listOf(1 to 9, 2 to 8, 3 to 7, 4 to 6),
+            linkedListOf(1, 2, 3, 4) zip linkedListOf(9, 8, 7, 6, 5)
+        )
+
+        val nullList: ListNode? = null
+        assertNull(nullList?.firstOrNull { it == 7 })
+        assertNull(linkedListOf(1, 2, 3).firstOrNull { it < 0 })
+        assertEquals(2, linkedListOf(1, 2, 3).firstOrNull { it >= 2 })
     }
 }

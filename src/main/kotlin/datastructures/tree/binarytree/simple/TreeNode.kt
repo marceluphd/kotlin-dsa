@@ -1,19 +1,20 @@
 package datastructures.tree.binarytree.simple
 
-import datastructures.tree.binarytree.simple.DFSTraversalOrder.INORDER
-import datastructures.tree.binarytree.simple.DFSTraversalOrder.POSTORDER
+import datastructures.tree.DFSTraversalOrder
+import datastructures.tree.DFSTraversalOrder.*
+
 import java.util.*
 
 /**
  * Definition for a binary tree node (based on LeetCode definition with some changes).
  */
-class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNode? = null) {
+class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNode? = null) : Iterable<Int> {
 
     val hasLeft: Boolean get() = left != null
     val hasRight: Boolean get() = right != null
     val isLeaf: Boolean get() = !hasLeft && !hasRight
-    val hasSingleChild: Boolean get() = (hasLeft || hasRight) && !(hasLeft && hasRight)
-    val hasTwoChildren: Boolean get() = left != null && right != null
+    val hasSingleChild: Boolean get() = hasLeft xor hasRight
+    val hasTwoChildren: Boolean get() = hasLeft && hasRight
 
     /**
      * Returns the number of nodes in the tree.
@@ -89,6 +90,11 @@ class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNo
         result = 31 * result + (right?.hashCode() ?: 0)
         return result
     }
+
+    /**
+     * Returns an iterator over the elements of this object.
+     */
+    override fun iterator(): Iterator<Int> = toList().iterator()
 }
 
 /**
@@ -109,13 +115,6 @@ fun TreeNode?.find(searchValue: Int): TreeNode? {
     }
 }
 
-
-sealed class DFSTraversalOrder {
-    object PREORDER : DFSTraversalOrder()
-    object INORDER : DFSTraversalOrder()
-    object POSTORDER : DFSTraversalOrder()
-}
-
 /**
  * Perform depth-first traversal on the tree, executing [visit] on each node.
  *
@@ -123,24 +122,24 @@ sealed class DFSTraversalOrder {
  *
  * **Space**: `O(n)`
  */
-fun TreeNode?.dfs(order: DFSTraversalOrder = DFSTraversalOrder.INORDER, visit: (TreeNode) -> Unit) {
+fun TreeNode?.dfs(order: DFSTraversalOrder = INORDER, visit: (TreeNode) -> Unit) {
     this ?: return
 
     when (order) {
-        DFSTraversalOrder.PREORDER -> {
+        PREORDER -> {
             visit(this)
-            left?.dfs(DFSTraversalOrder.PREORDER, visit)
-            right?.dfs(DFSTraversalOrder.PREORDER, visit)
+            left?.dfs(PREORDER, visit)
+            right?.dfs(PREORDER, visit)
         }
 
-        DFSTraversalOrder.INORDER -> {
-            left?.dfs(DFSTraversalOrder.INORDER, visit)
+        INORDER -> {
+            left?.dfs(INORDER, visit)
             visit(this)
-            right?.dfs(DFSTraversalOrder.INORDER, visit)
+            right?.dfs(INORDER, visit)
         }
 
-        DFSTraversalOrder.POSTORDER -> {
-            left?.dfs(DFSTraversalOrder.POSTORDER, visit)
+        POSTORDER -> {
+            left?.dfs(POSTORDER, visit)
             right?.dfs(POSTORDER, visit)
             visit(this)
         }

@@ -1,41 +1,14 @@
 package datastructures.linkedlist
 
+import datastructures.tree.binarytree.simple.toList
+
 /**
  * TODO: Make Generic
  * Definition for a singly-linked list (from LeetCode).
  */
-class ListNode(var value: Int = 0) {
+class ListNode(var value: Int = 0) : Iterable<Int> {
 
     var next: ListNode? = null
-
-    /**
-     * Returns the first node whose data (value) matches the given [predicate], or null if element was not found.
-     *
-     * **Time**: `O(n)`
-     *
-     * **Space**: `O(1)`
-     */
-    inline fun firstOrNull(predicate: (ListNode) -> Boolean): ListNode? {
-        var node: ListNode? = this
-        while (node != null) {
-            if (predicate(node)) {
-                return node
-            }
-            node = node.next
-        }
-        return null
-    }
-
-    /**
-     * Performs the given [action] on each node.
-     */
-    fun forEach(action: (ListNode) -> Unit) {
-        var node: ListNode? = this
-        while (node != null) {
-            action(node)
-            node = node.next
-        }
-    }
 
     /**
      * Returns a new list which is a copy of the original list.
@@ -108,6 +81,11 @@ class ListNode(var value: Int = 0) {
     }
 
     override fun hashCode(): Int = value
+
+    /**
+     * Returns an iterator over the elements of this object.
+     */
+    override fun iterator(): Iterator<Int> = toList().iterator()
 
     companion object {
         /**
