@@ -406,6 +406,40 @@ class BinarySearchTreeTest {
     }
 
     @Test
+    fun depth() {
+        assertEquals(-1, emptyTree.depth(0))
+        assertEquals(-1, emptyTree.depth(99))
+        assertEquals(-1, rootTree.depth(7))
+        assertEquals(0, rootTree.depth(99))
+        assertEquals(0, tree1.depth(20))
+        assertEquals(2, tree1.depth(17))
+        assertEquals(3, tree1.depth(28))
+        assertEquals(5, tree1.depth(8))
+    }
+
+    @Test
+    fun level() {
+        assertEquals(-1, emptyTree.depth(0))
+        assertEquals(-1, emptyTree.level(0))
+        assertEquals(-1, emptyTree.level(99))
+        assertEquals(-1, rootTree.level(7))
+        assertEquals(1, rootTree.level(99))
+        assertEquals(1, tree1.level(20))
+        assertEquals(3, tree1.level(17))
+        assertEquals(4, tree1.level(28))
+        assertEquals(6, tree1.level(8))
+    }
+
+    @Test
+    fun isFull() {
+        assertTrue(emptyTree.isFull())
+        assertTrue(rootTree.isFull())
+        assertFalse(tree1.isFull())
+        assertTrue(tree2.isFull())
+        assertTrue(duplicatesTree.isFull())
+    }
+
+    @Test
     fun contentToString() {
         assertEquals("[0, 7, 8, 9, 10, 15, 16, 17, 18, 20, 22, 27, 28, 29, 30]", tree1.contentToString())
         assertEquals("[4, 8, 10, 12, 14, 16, 20]", tree2.contentToString())

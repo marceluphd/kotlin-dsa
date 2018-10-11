@@ -273,6 +273,47 @@ class BinarySearchTree<T : Comparable<T>> : SearchTree<T>, Iterable<T> {
         return uniqueElements
     }
 
+    /**
+     * Find the depth of a node containing the search value.
+     * (Depth is defined as the number of edges on the path from the root node to the search node)
+     * @param element The search key
+     * @return the depth of the node containing the [element], or -1 if the element is not in the tree.
+     */
+    fun depth(element: T): Int = depth(root, element) ?: -1
+
+    /**
+     * The level of a node is defined by 1 + depth (the number of edges between the node and the root).
+     * @param element The value of the node to find the level of.
+     * @return The level of the node with the specified value, or -1 if not contained in the tree.
+     */
+    fun level(element: T): Int {
+        val depth = depth(element)
+        return if (depth == -1) -1 else depth + 1
+    }
+
+    /**
+     * A Binary Tree is **full** if all nodes have either 0 or 2 children.
+     * @return true if the binary search tree is full, false if the tree is not full.
+     */
+    fun isFull(node: BinaryTreeNode<T>? = root): Boolean = when {
+        node == null -> true
+        node.isLeaf -> true
+        node.hasOneChild -> false
+        else -> isFull(node.left) && isFull(node.right)
+    }
+
+    // TODO
+    fun isBalanced(node: BinaryTreeNode<T>? = root): Boolean = TODO()
+    fun isComplete(node: BinaryTreeNode<T>? = root): Boolean = TODO()
+    fun isPerfect(node: BinaryTreeNode<T>? = root): Boolean = TODO()
+
+    private fun depth(node: BinaryTreeNode<T>?, element: T, depth: Int = 0): Int? = when {
+        node == null -> -1
+        element < node.data -> depth(node.left, element, depth + 1)
+        element > node.data -> depth(node.right, element, depth + 1)
+        else -> depth
+    }
+
     private fun minNode(node: BinaryTreeNode<T>?): BinaryTreeNode<T>? {
         node ?: return null
         return minNode(node.left) ?: node
@@ -338,7 +379,7 @@ class BinarySearchTree<T : Comparable<T>> : SearchTree<T>, Iterable<T> {
 
             node.count > 1 -> node.count--
             node.isLeaf -> deletedNode = null
-            node.hasSingleChild -> deletedNode = if (node.hasLeft) node.left else node.right
+            node.hasOneChild -> deletedNode = if (node.hasLeft) node.left else node.right
             node.hasTwoChildren -> deletedNode = deleteNodeWithTwoSubtrees(node)
         }
 
@@ -372,12 +413,9 @@ class BinarySearchTree<T : Comparable<T>> : SearchTree<T>, Iterable<T> {
     /* 
         TODO:
         - copyOf
-        - depth()
-        - level()
-        - isFull
+        - isComplete
         - isPerfect
         - isBalanced
-        - isComplete
         - fromSorted(Array/List)
     */
 }
@@ -401,7 +439,7 @@ class BinaryTreeNode<T : Comparable<T>>(
     val hasLeft: Boolean get() = left != null
     val hasRight: Boolean get() = right != null
     val isLeaf: Boolean get() = !hasLeft && !hasRight
-    val hasSingleChild: Boolean get() = hasLeft xor hasRight
+    val hasOneChild: Boolean get() = hasLeft xor hasRight
     val hasTwoChildren: Boolean get() = hasLeft && hasRight
 
     /** Only compares the [data] & [count], not children. */
