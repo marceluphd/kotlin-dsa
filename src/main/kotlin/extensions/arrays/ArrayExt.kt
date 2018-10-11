@@ -1,5 +1,9 @@
 package extensions.arrays
 
+/*
+ * Extensions for Array & the primitive arrays (IntArray, BooleanArray, etc.)
+ */
+
 /**
  * Returns a list of pairs of each two adjacent elements in this collection.
  * The returned list is empty if this collection contains less than two elements.

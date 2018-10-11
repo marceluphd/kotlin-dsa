@@ -26,7 +26,7 @@ class Solution {
         result: MutableList<String>
     ) {
         // Opening braces should be added to the substring first, so if the # of openBraces > # of closeBraces,
-        // there is a problem.
+        // this is not a valid solution
         if (openBraces > closeBraces) {
             return
         }

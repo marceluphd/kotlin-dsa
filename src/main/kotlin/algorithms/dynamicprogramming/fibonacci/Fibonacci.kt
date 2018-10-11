@@ -1,6 +1,5 @@
 package algorithms.dynamicprogramming.fibonacci
 
-import java.lang.Thread.yield
 import kotlin.coroutines.experimental.buildSequence
 
 /**

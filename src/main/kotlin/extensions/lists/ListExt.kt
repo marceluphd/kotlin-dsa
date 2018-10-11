@@ -1,5 +1,9 @@
 package extensions.lists
 
+/*
+ * Extensions for List.
+ */
+
 /**
  * Returns views of the first and second halves of the list.
  * If the list is odd-sized, the first half is larger.

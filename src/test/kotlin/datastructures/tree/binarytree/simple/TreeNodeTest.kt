@@ -133,10 +133,18 @@ class TreeNodeTest {
         assertEquals(listOf(7, 4, 9, 3, 8, 1), nodesBstWithNulls)
     }
 
-    @Ignore
     @Test
     fun depthAwareBFS() {
-        // TODO
+        val nodesWithDepth = ArrayList<Pair<TreeNode, Int>>()
+        val tree = bst3LevelsFull
+        bst3LevelsFull.depthAwareBFS { nodesWithDepth += it }
+        assertEquals(
+            listOf(
+                tree to 0, tree.left to 1, tree.right to 1,
+                tree.left?.left to 2, tree.left?.right to 2,
+                tree.right?.left to 2, tree.right?.right to 2
+            ), nodesWithDepth
+        )
     }
 
     @Test

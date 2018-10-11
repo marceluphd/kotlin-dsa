@@ -4,12 +4,6 @@ import kotlin.coroutines.experimental.buildSequence
 import kotlin.math.sqrt
 
 /**
- * Primes.
- * See https://github.com/rojiani/kotlin-99 for more.
- */
-
-
-/**
  * [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
  */
 object SieveOfEratosthenes {

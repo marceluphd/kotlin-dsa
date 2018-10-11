@@ -1,11 +1,11 @@
 package types.activity
 
-data class Interval(val startTime: Time, val endTime: Time) {
+data class TimeInterval(val startTime: Time, val endTime: Time) {
     override fun toString(): String = "($startTime-$endTime)"
 
     /**
-     * Secondary constructor which allows creating an Interval with time strings:
-     * `Interval("10:00", "14:45)`
+     * Secondary constructor which allows creating an TimeInterval with time strings:
+     * `TimeInterval("10:00", "14:45)`
      */
     constructor(start: String, end: String) : this(Time(start), Time(end))
 
@@ -14,18 +14,18 @@ data class Interval(val startTime: Time, val endTime: Time) {
      * Note that (10:00-11:00) & (11:00-12:00) are considered non-overlapping.
      * @return true if the Intervals overlap.
      */
-    fun overlapsWith(other: Interval): Boolean =
+    fun overlapsWith(other: TimeInterval): Boolean =
         (this.endTime > other.startTime) && (this.startTime < other.endTime)
 
     /**
      * @return true if the Intervals do not overlap
      */
-    fun isCompatibleWith(other: Interval): Boolean = !overlapsWith(other)
+    fun isCompatibleWith(other: TimeInterval): Boolean = !overlapsWith(other)
 
     /**
      * Merge 2 Intervals.
      */
-    fun mergeWith(other: Interval): Interval = Interval(
+    fun mergeWith(other: TimeInterval): TimeInterval = TimeInterval(
         minOf(startTime, other.startTime),
         maxOf(endTime, other.endTime)
     )

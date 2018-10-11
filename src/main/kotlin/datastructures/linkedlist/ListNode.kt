@@ -1,7 +1,5 @@
 package datastructures.linkedlist
 
-import datastructures.tree.binarytree.simple.toList
-
 /**
  * TODO: Make Generic
  * Definition for a singly-linked list (from LeetCode).

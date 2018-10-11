@@ -9,11 +9,11 @@ import kotlin.math.max
 data class Knapsack(val items: Set<Item>) {
     // Calculate the total value of the knapsack
     val totalValue by lazy {
-        items.sumBy { it.value }
+        items.sumBy { item -> item.value }
     }
 
     internal val totalWeight by lazy {
-        items.sumBy { it.weight }
+        items.sumBy { item -> item.weight }
     }
 }
 

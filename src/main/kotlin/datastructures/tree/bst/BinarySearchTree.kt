@@ -1,6 +1,6 @@
 package datastructures.tree.bst
 
-import datastructures.exceptions.ItemNotFoundException
+import common.exceptions.ItemNotFoundException
 import datastructures.tree.DFSTraversalOrder
 import datastructures.tree.DFSTraversalOrder.INORDER
 import datastructures.tree.DFSTraversalOrder.POSTORDER
@@ -9,8 +9,7 @@ import java.util.*
 
 /**
  * Binary Search Tree.
- * Duplicates are allowed and stored as described
- * [here](https://www.geeksforgeeks.org/how-to-handle-duplicates-in-binary-search-tree/).
+ * Duplicates are allowed and stored as described [here](https://www.geeksforgeeks.org/how-to-handle-duplicates-in-binary-search-tree/).
  */
 class BinarySearchTree<T : Comparable<T>> : SearchTree<T>, Iterable<T> {
 
@@ -130,7 +129,8 @@ class BinarySearchTree<T : Comparable<T>> : SearchTree<T>, Iterable<T> {
     fun dfs(
         node: BinaryTreeNode<T>? = root,
         order: DFSTraversalOrder = INORDER,
-        visit: (T) -> Unit) {
+        visit: (T) -> Unit
+    ) {
         node ?: return
 
         when (order) {
@@ -369,17 +369,23 @@ class BinarySearchTree<T : Comparable<T>> : SearchTree<T>, Iterable<T> {
         else 1 + maxOf(heightOf(node.left), heightOf(node.right))
 
 
-    // TODO - copyOf
-    // TODO - depth(key)
-    // TODO - level(key)
-    // TODO - isFull
-    // TODO - isPerfect
-    // TODO - isBalanced
-    // TODO - isComplete
-    // TODO - fromSorted(Array/List)
+    /* 
+        TODO:
+        - copyOf
+        - depth()
+        - level()
+        - isFull
+        - isPerfect
+        - isBalanced
+        - isComplete
+        - fromSorted(Array/List)
+    */
 }
 
 
+/**
+ * A node in a Binary Tree.
+ */
 class BinaryTreeNode<T : Comparable<T>>(
     val data: T,
     var left: BinaryTreeNode<T>? = null,
@@ -427,11 +433,7 @@ interface SearchTree<T : Comparable<T>> {
     fun add(element: T)
 
     /** Adds all of the elements in the specified collection to the tree. */
-    fun addAll(elements: Collection<T>) {
-        elements.forEach { e ->
-            add(e)
-        }
-    }
+    fun addAll(elements: Collection<T>)
 
     /**
      * Remove the specified element from the tree if it exists.

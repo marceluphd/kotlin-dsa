@@ -1,6 +1,6 @@
 package datastructures.tree.bst
 
-import datastructures.exceptions.ItemNotFoundException
+import common.exceptions.ItemNotFoundException
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

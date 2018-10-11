@@ -1,4 +1,4 @@
-package datastructures.exceptions
+package common.exceptions
 
 /**
  * Exception class for failed finds/removes in data structures.
