@@ -53,7 +53,7 @@ fun longestCommonSubstring(a: String, b: String): String {
 }
 
 /**
- * Return the solution grid as a String:
+ * Returns a formatted string of the results table.
  * ```
  * |   | X | B | A | B | A |
  * | X | 0 | 0 | 0 | 0 | 0 |
