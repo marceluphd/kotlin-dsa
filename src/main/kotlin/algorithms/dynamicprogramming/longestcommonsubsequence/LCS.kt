@@ -33,7 +33,12 @@ fun longestCommonSubsequence(a: String, b: String): Int {
 }
 
 /**
- * Returns the actual LCS.
+ * Returns the [Longest Common Subsequence (LCS)](https://en.wikipedia.org/wiki/Longest_common_subsequence_problem) of
+ * [a] and [b].
+ *
+ * **Note**: there may be multiple LCS solutions. This returns *one* of the longest subsequences from
+ * the solution set.
+ * @return longest common subsequence (LCS)
  */
 fun lcs(a: String, b: String): String {
     val dp: Array<Array<String>> = Array(a.length + 1) { Array(b.length + 1) { "" } }

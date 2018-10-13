@@ -1,4 +1,4 @@
-package algorithms.math.primes
+package algorithms.math
 
 import org.junit.Assert
 import org.junit.Test

@@ -1,4 +1,4 @@
-package algorithms.math.primes
+package algorithms.math
 
 import kotlin.coroutines.experimental.buildSequence
 import kotlin.math.sqrt

@@ -27,7 +27,12 @@ fun lengthOfLongestCommonSubstring(a: String, b: String): Int {
 }
 
 /**
- * This version returns the longest common substring itself.
+ * Returns the [Longest Common Substring](https://en.wikipedia.org/wiki/Longest_common_substring_problem) of
+ * [a] and [b].
+ *
+ * **Note**: there may be multiple substrings with the same length - this returns *one* of the longest substrings from
+ * the solution set
+ * @return longest common substring
  */
 fun longestCommonSubstring(a: String, b: String): String {
     val dp = Array(a.length + 1) { IntArray(b.length + 1) }

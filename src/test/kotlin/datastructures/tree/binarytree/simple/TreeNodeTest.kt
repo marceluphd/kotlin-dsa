@@ -2,7 +2,6 @@ package datastructures.tree.binarytree.simple
 
 import datastructures.tree.DFSTraversalOrder
 import org.junit.Assert.*
-import org.junit.Ignore
 import org.junit.Test
 
 class TreeNodeTest {

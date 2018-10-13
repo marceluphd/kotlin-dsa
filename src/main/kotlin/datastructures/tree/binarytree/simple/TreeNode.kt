@@ -15,7 +15,6 @@ class TreeNode(var value: Int = 0, var left: TreeNode? = null, var right: TreeNo
     val isLeaf: Boolean get() = !hasLeft && !hasRight
     val hasSingleChild: Boolean get() = hasLeft xor hasRight
     val hasTwoChildren: Boolean get() = hasLeft && hasRight
-    var depth: Int = 0
 
     /**
      * Returns the number of nodes in the tree.
